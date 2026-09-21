@@ -85,9 +85,10 @@ h1 em{display:block;text-transform:none;font-style:italic;font-weight:500;letter
 .sec-head p{color:var(--taupe);margin:12px 0 0;font-size:15px}
 
 /* ---------- details ---------- */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--white);border:1px solid var(--gold-soft);box-shadow:0 18px 44px rgba(43,38,32,.06)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--white);border:1px solid var(--gold-soft);box-shadow:0 18px 44px rgba(43,38,32,.06)}
 .cell{padding:32px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-.cell + .cell{border-left:1px solid var(--gold-soft)}
+.cell:nth-child(even){border-left:1px solid var(--gold-soft)}
+.cell:nth-child(n+3){border-top:1px solid var(--gold-soft)}
 .label{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;margin:0 0 10px}
 .value{font-family:var(--display);font-size:25px;font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
 .sub{color:var(--taupe);font-size:14px;margin:8px 0 0}
@@ -139,7 +140,8 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
 @media (max-width:640px){
   .hero{padding-block:0 56px}
   .grid{grid-template-columns:1fr}
-  .cell + .cell{border-left:0;border-top:1px solid var(--gold-soft)}
+  .cell{border-left:0!important}
+  .cell + .cell{border-top:1px solid var(--gold-soft)}
   .portrait-inner{grid-template-columns:1fr;gap:28px}
   .frame{max-width:300px;margin:0 auto}
   .portrait h2{text-align:center}.portrait p{text-align:center}
@@ -175,7 +177,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
     <div class="rule-sm"></div>
     <h1>Noite de <em>Gratidão</em></h1>
     <div class="rule">✦</div>
-    <p class="local">Local: Monte Rey Buffet</p>
+    <p class="local">19 de outubro · 19h · Monte Rey Buffet</p>
     <p class="lead">Um momento de celebração e gratidão a Deus. Na elegância do ouro e branco, com a presença de quem o Juan ama. Você!
       <strong>Sua presença torna essa noite ainda mais especial.</strong>
     </p>
@@ -194,6 +196,11 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
         <p class="label">Data</p>
         <p class="value">19 de outubro</p>
         <p class="sub">Segunda-feira · 2026</p>
+      </div>
+      <div class="cell">
+        <p class="label">Horário</p>
+        <p class="value">19h</p>
+        <p class="sub">Pontualidade é bem-vinda</p>
       </div>
       <div class="cell">
         <p class="label">Local</p>
@@ -259,7 +266,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
       <div class="done" id="done" hidden>
         <p class="big">Presença confirmada ✦</p>
         <p>Obrigado, <span class="gold" id="doneNome">você</span>! Seu lugar está garantido.</p>
-        <p>Nos vemos dia <span class="gold">19 de outubro</span> no <span class="gold">Buffet Monte Rey</span>. Não esqueça: tons pastéis.</p>
+        <p>Nos vemos dia <span class="gold">19 de outubro, às 19h</span>, no <span class="gold">Buffet Monte Rey</span>. Não esqueça: tons pastéis.</p>
       </div>
     </div>
   </div>
@@ -267,7 +274,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
 
 <footer>
   <p class="f1">Noite de <em>Gratidão</em></p>
-  <p class="f2">19 de outubro · Monte Rey Buffet · Tons pastéis</p>
+  <p class="f2">19 de outubro · 19h · Monte Rey Buffet · Tons pastéis</p>
 </footer>
 
 <script>
@@ -334,7 +341,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
     }
 
     if (WHATSAPP) {
-      var texto = "Olá, Juan! Confirmo presença na Noite de Gratidão (19/10).\n" +
+      var texto = "Olá, Juan! Confirmo presença na Noite de Gratidão (19/10, às 19h).\n" +
         "Nome: " + payload.nome + "\n" +
         "Acompanhantes: " + payload.acompanhantes +
         (payload.recado ? "\nRecado: " + payload.recado : "");
