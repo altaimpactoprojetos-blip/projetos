@@ -58,44 +58,48 @@ Deno.serve(async (req: Request) => {
   const primeiroNome = row.nome.trim().split(/\s+/)[0];
   const pessoas = 1 + Number(row.acompanhantes || 0);
   const mapa = "https://www.google.com/maps/search/?api=1&query=Buffet+Monte+Rey";
+  const qrUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/qr-inscricao?id=${row.id}`;
 
   const linha = (k: string, v: string) => `
     <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #F1EBDD;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#A8842E">${k}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #F1EBDD;text-align:left;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#A8842E">${k}</td>
       <td style="padding:10px 0;border-bottom:1px solid #F1EBDD;text-align:right;font-family:Georgia,serif;font-size:17px;color:#2B2620">${v}</td>
     </tr>`;
 
   const html = `
-  <div style="background:#F8F5EF;padding:32px 16px;font-family:Arial,sans-serif;color:#2B2620">
-    <div style="max-width:520px;margin:auto;background:#fff;border:1px solid #E9D9B0;padding:36px 28px">
-      <p style="text-align:center;letter-spacing:.34em;font-size:11px;color:#A8842E;margin:0 0 10px">JUAN CONVIDA</p>
-      <p style="text-align:center;font-family:Georgia,serif;font-size:34px;line-height:1.1;margin:0;color:#4A3B22;letter-spacing:.04em">NOITE DE</p>
-      <p style="text-align:center;font-family:Georgia,serif;font-size:38px;line-height:1.1;margin:0 0 22px;color:#B8923C;letter-spacing:.04em">GRATIDÃO</p>
-      <p style="text-align:center;letter-spacing:.3em;font-size:11px;color:#A8842E;margin:0 0 6px">PRESENÇA CONFIRMADA</p>
-      <p style="text-align:center;font-family:Georgia,serif;font-size:26px;margin:0 0 8px">Obrigado, ${esc(primeiroNome)}!</p>
-      <p style="text-align:center;color:#6F665C;font-size:14px;margin:0 0 24px">Seu lugar está garantido. Guarde este e-mail e apresente o número na entrada.</p>
-      <div style="text-align:center;background:#F8F5EF;border:1px solid #E9D9B0;padding:16px;margin:0 0 24px">
-        <p style="letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 6px">SUA INSCRIÇÃO</p>
-        <p style="font-family:Georgia,serif;font-size:40px;font-weight:bold;margin:0;color:#2B2620">Nº ${numero}</p>
-        <p style="color:#6F665C;font-size:13px;margin:6px 0 0">${esc(row.nome)} · ${pessoas} pessoa${pessoas > 1 ? "s" : ""}</p>
-      </div>
-      <table style="width:100%;border-collapse:collapse;border-top:1px solid #E9D9B0">
+  <div style="background:#F8F5EF;padding:24px 12px;font-family:Arial,sans-serif;color:#2B2620">
+    <div style="max-width:420px;margin:auto;background:#fff;border:1px solid #E9D9B0;padding:28px 22px;text-align:center">
+      <p style="letter-spacing:.3em;font-size:11px;color:#A8842E;margin:0 0 10px">PRESENÇA CONFIRMADA</p>
+      <p style="font-family:Georgia,serif;font-size:30px;margin:0 0 6px;color:#2B2620">Obrigado, <span style="color:#A8842E">${esc(primeiroNome)}</span>!</p>
+      <p style="color:#6F665C;font-size:14px;margin:0 0 18px">Seu lugar está garantido. Anote os detalhes:</p>
+
+      <table style="width:100%;border-collapse:collapse;border-top:1px solid #E9D9B0;border-bottom:1px solid #E9D9B0">
         ${linha("Data", "19 de outubro")}
         ${linha("Horário", "19h")}
         ${linha("Local", `<a href="${mapa}" style="color:#2B2620;text-decoration:none;border-bottom:1px solid #E9D9B0">Monte Rey Buffet</a>`)}
         ${linha("Dress code", "Tons pastéis")}
       </table>
-      <div style="margin:26px 0 0;border:1px solid #E9D9B0;padding:18px 20px;background:#FCFAF6">
-        <p style="text-align:center;letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 12px">SUGESTÕES DE PRESENTE</p>
-        <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;color:#2B2620">
-          <tr><td style="padding:6px 0;color:#6F665C">Blusa</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px">Tamanho M</td></tr>
-          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Calça e short</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">Tamanho 42</td></tr>
-          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Sapato</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42 / 43</td></tr>
-          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Perfume</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">À sua escolha</td></tr>
+
+      <div style="margin:22px auto 0;max-width:300px;background:#F8F5EF;border:1px solid #E9D9B0;padding:20px 16px 16px">
+        <p style="letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 8px">SUA INSCRIÇÃO</p>
+        <p style="font-family:Georgia,serif;font-size:38px;font-weight:bold;margin:0 0 14px;color:#2B2620">Nº ${numero}</p>
+        <div style="background:#fff;border:1px solid #E9D9B0;padding:10px;display:inline-block">
+          <img src="${qrUrl}" width="180" height="180" alt="QR code da inscrição nº ${numero}" style="display:block;width:180px;height:180px">
+        </div>
+        <p style="color:#6F665C;font-size:12px;margin:12px 0 0">${esc(row.nome)} · ${pessoas} pessoa${pessoas > 1 ? "s" : ""}<br>Apresente este QR code na entrada.</p>
+      </div>
+
+      <div style="margin:22px auto 0;max-width:300px;border-top:1px solid #E9D9B0;padding-top:16px">
+        <p style="letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 8px">SUGESTÕES DE PRESENTE</p>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;color:#2B2620">
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C">Blusa</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px">M</td></tr>
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Calça e short</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42</td></tr>
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Sapato</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42 / 43</td></tr>
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Perfume</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">à sua escolha</td></tr>
         </table>
       </div>
-      <p style="text-align:center;color:#6F665C;font-size:13px;margin:26px 0 0">Sua presença torna essa noite ainda mais especial.</p>
-      <p style="text-align:center;font-family:Georgia,serif;font-style:italic;font-size:18px;color:#A8842E;margin:10px 0 0">Com carinho, Juan</p>
+
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:17px;color:#A8842E;margin:22px 0 0">Com carinho, Juan</p>
     </div>
   </div>`;
 

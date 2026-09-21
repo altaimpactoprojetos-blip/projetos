@@ -13,6 +13,7 @@
   - `BREVO_API_KEY` — chave de API da Brevo.
   - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo (altaimpactoprojetos@gmail.com).
   - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
+- Edge Function `qr-inscricao` (pública, por UUID) gera a imagem PNG do QR code usada no e-mail.
 - O organizador acompanha as inscrições em `inscricoes.html` (não recebe e-mail).
 
 ## Publicação (GitHub Pages + domínio)
