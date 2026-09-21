@@ -66,8 +66,8 @@ body.closed{overflow:hidden}
 .rule-sm::before,.rule-sm::after{content:"";position:absolute;top:-2px;width:5px;height:5px;background:var(--gold);border-radius:50%}
 .rule-sm::before{left:-2px}.rule-sm::after{right:-2px}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(50px,11vw,96px);line-height:.95;margin:0;letter-spacing:.02em;text-wrap:balance;text-transform:uppercase;color:#4A3B22}
-h1 .de{display:block;font-family:var(--display);font-style:italic;font-weight:500;text-transform:none;letter-spacing:.06em;font-size:.42em;line-height:1;color:var(--gold-deep);margin:.18em 0 .1em}
-h1 em{display:block;text-transform:none;font-style:italic;font-weight:500;letter-spacing:0;font-size:1.18em;background:linear-gradient(100deg,#B08A32 0%,#E1C26E 45%,#A8842E 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:.02em}
+h1 .de{display:block;font-style:normal;font-weight:600;text-transform:uppercase;letter-spacing:.3em;padding-left:.3em;font-size:.34em;line-height:1;color:#4A3B22;margin:.35em 0 .3em}
+h1 em{display:block;font-style:normal;font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:.86em;line-height:1;background:linear-gradient(100deg,#B08A32 0%,#E1C26E 45%,#A8842E 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rule{width:220px;margin:30px auto 24px;display:flex;align-items:center;gap:14px;color:var(--gold)}
 .rule::before,.rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
 .rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
@@ -140,6 +140,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
 
 @media (max-width:640px){
   .hero{padding-block:0 56px}
+  .local{font-size:11px;letter-spacing:.2em}
   .grid{grid-template-columns:1fr}
   .cell{border-left:0!important}
   .cell + .cell{border-top:1px solid var(--gold-soft)}
