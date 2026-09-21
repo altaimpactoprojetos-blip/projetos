@@ -2,7 +2,7 @@
 
 ## Arquivos
 - `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
-- `inscricoes.html` — painel restrito para ver quem se inscreveu (login com Supabase Auth), busca e download em CSV.
+- `inscricoes.html` — painel restrito para ver quem se inscreveu (login Supabase Auth, usuário `inscricoes@juanbusiness.online`), busca e download em CSV.
 
 ## Estrutura do repositório
 - `index.html` / `inscricoes.html` — site.
