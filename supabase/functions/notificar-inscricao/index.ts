@@ -85,6 +85,15 @@ Deno.serve(async (req: Request) => {
         ${linha("Local", `<a href="${mapa}" style="color:#2B2620;text-decoration:none;border-bottom:1px solid #E9D9B0">Monte Rey Buffet</a>`)}
         ${linha("Dress code", "Tons pastéis")}
       </table>
+      <div style="margin:26px 0 0;border:1px solid #E9D9B0;padding:18px 20px;background:#FCFAF6">
+        <p style="text-align:center;letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 12px">SUGESTÕES DE PRESENTE</p>
+        <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;color:#2B2620">
+          <tr><td style="padding:6px 0;color:#6F665C">Blusa</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px">Tamanho M</td></tr>
+          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Calça e short</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">Tamanho 42</td></tr>
+          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Sapato</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42 / 43</td></tr>
+          <tr><td style="padding:6px 0;color:#6F665C;border-top:1px solid #F1EBDD">Perfume</td><td style="padding:6px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">À sua escolha</td></tr>
+        </table>
+      </div>
       <p style="text-align:center;color:#6F665C;font-size:13px;margin:26px 0 0">Sua presença torna essa noite ainda mais especial.</p>
       <p style="text-align:center;font-family:Georgia,serif;font-style:italic;font-size:18px;color:#A8842E;margin:10px 0 0">Com carinho, Juan</p>
     </div>
