@@ -128,11 +128,18 @@ button.send{width:100%;margin-top:8px;padding:16px;border:0;border-radius:2px;ba
 button.send:disabled{opacity:.6;cursor:wait}
 .msg{margin:12px 0 0;text-align:center;font-size:14px;min-height:1.4em}
 .msg.err{color:#9B3B2E}
-.done{text-align:center;padding-block:20px}
-.done .big{font-family:var(--display);font-size:44px;font-weight:500;margin:0 0 10px;line-height:1.1}
-.done p{color:var(--taupe);margin:0 0 8px}
+.done{text-align:center;padding-block:8px}
+.done .label{margin-bottom:10px}
+.done .big{font-family:var(--display);font-size:clamp(32px,8vw,42px);font-weight:500;margin:0 0 6px;line-height:1.1;color:var(--ink)}
+.done .lead-done{color:var(--taupe);margin:0 0 20px;font-size:15px}
 .done .gold{color:var(--gold-deep);font-weight:500}
-.ticket{margin:26px auto 0;max-width:300px;background:var(--ivory);border:1px solid var(--gold-soft);padding:22px 18px 18px}
+.resumo{margin:0 auto;max-width:300px;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft);padding:6px 0}
+.resumo div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:9px 4px}
+.resumo div + div{border-top:1px solid var(--line)}
+.resumo dt{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
+.resumo dd{margin:0;font-family:var(--display);font-size:19px;font-weight:600;color:var(--ink)}
+.resumo dd a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.ticket{margin:22px auto 0;max-width:300px;background:var(--ivory);border:1px solid var(--gold-soft);padding:22px 18px 18px}
 .ticket .label{margin-bottom:8px}
 .ticket .num{font-family:var(--display);font-size:40px;font-weight:600;line-height:1;margin:0 0 14px;font-variant-numeric:tabular-nums}
 .ticket .qr{display:flex;justify-content:center;background:#fff;padding:12px;border:1px solid var(--gold-soft)}
@@ -272,9 +279,15 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
         </form>
       </div>
       <div class="done" id="done" hidden>
-        <p class="big">Presença confirmada ✦</p>
-        <p>Obrigado, <span class="gold" id="doneNome">você</span>! Seu lugar está garantido.</p>
-        <p>Nos vemos dia <span class="gold">19 de outubro, às 19h</span>, no <span class="gold">Buffet Monte Rey</span>. Não esqueça: tons pastéis.</p>
+        <p class="label">Presença confirmada</p>
+        <p class="big">Obrigado, <span class="gold" id="doneNome">você</span>!</p>
+        <p class="lead-done">Seu lugar está garantido. Anote os detalhes:</p>
+        <dl class="resumo">
+          <div><dt>Data</dt><dd>19 de outubro</dd></div>
+          <div><dt>Horário</dt><dd>19h</dd></div>
+          <div><dt>Local</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Buffet+Monte+Rey" target="_blank" rel="noopener">Monte Rey Buffet</a></dd></div>
+          <div><dt>Dress code</dt><dd>Tons pastéis</dd></div>
+        </dl>
         <div class="ticket" id="ticket" hidden>
           <p class="label">Sua inscrição</p>
           <p class="num" id="doneNumero">—</p>
