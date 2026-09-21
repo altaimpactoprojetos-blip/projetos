@@ -3,7 +3,8 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 // Chamada pelo gatilho do banco (pg_net) a cada nova inscrição.
 // Recebe a linha em `record`; se vier só o id, busca com a chave de serviço.
-// Envia um e-mail via Resend. Segredos: RESEND_API_KEY (obrigatório), NOTIFY_EMAIL, NOTIFY_FROM.
+// Envia um e-mail via Brevo (API transacional). Segredos: BREVO_API_KEY (obrigatório),
+// NOTIFY_EMAIL (destino), NOTIFY_FROM_EMAIL e NOTIFY_FROM_NAME (remetente verificado na Brevo).
 
 type Row = { id?: string; nome: string; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
 
@@ -43,12 +44,13 @@ Deno.serve(async (req: Request) => {
     .from("inscricoes_aniversario_juan")
     .select("id", { count: "exact", head: true });
 
-  const apiKey = Deno.env.get("RESEND_API_KEY");
+  const apiKey = Deno.env.get("BREVO_API_KEY");
   const to = Deno.env.get("NOTIFY_EMAIL") ?? "solysprojetos@gmail.com";
-  const from = Deno.env.get("NOTIFY_FROM") ?? "Noite de Gratidão <onboarding@resend.dev>";
+  const fromEmail = Deno.env.get("NOTIFY_FROM_EMAIL") ?? to;
+  const fromName = Deno.env.get("NOTIFY_FROM_NAME") ?? "Noite de Gratidão";
   if (!apiKey) {
-    console.warn("RESEND_API_KEY não configurada; e-mail não enviado.");
-    return new Response(JSON.stringify({ ok: false, erro: "RESEND_API_KEY ausente", inscricao: row.nome }), {
+    console.warn("BREVO_API_KEY não configurada; e-mail não enviado.");
+    return new Response(JSON.stringify({ ok: false, erro: "BREVO_API_KEY ausente", inscricao: row.nome }), {
       status: 200, headers: { "Content-Type": "application/json" },
     });
   }
@@ -68,18 +70,20 @@ Deno.serve(async (req: Request) => {
       <p style="font-family:Arial,sans-serif;font-size:13px;color:#6F665C;margin-top:20px">Total de inscrições até agora: <strong>${count ?? "?"}</strong></p>
     </div>`;
 
-  const r = await fetch("https://api.resend.com/emails", {
+  const r = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+    headers: { "Content-Type": "application/json", Accept: "application/json", "api-key": apiKey },
     body: JSON.stringify({
-      from, to: [to],
+      sender: { name: fromName, email: fromEmail },
+      to: [{ email: to }],
       subject: `Nova inscrição: ${row.nome} (${pessoas} pessoa${pessoas > 1 ? "s" : ""})`,
-      html,
+      htmlContent: html,
+      tags: ["noite-de-gratidao"],
     }),
   });
   const txt = await r.text();
-  if (!r.ok) console.error("Resend falhou:", r.status, txt);
-  return new Response(JSON.stringify({ ok: r.ok, resend: txt }), {
+  if (!r.ok) console.error("Brevo falhou:", r.status, txt);
+  return new Response(JSON.stringify({ ok: r.ok, brevo: txt }), {
     status: 200, headers: { "Content-Type": "application/json" },
   });
 });

@@ -8,10 +8,11 @@
 - Tabela `public.inscricoes_aniversario_juan` (nome, telefone, acompanhantes, recado, criado_em).
 - RLS: a chave pública só **insere**; só usuário **logado** lê.
 - Gatilho `trg_notificar_inscricao_aniversario_juan` (pg_net) chama a Edge Function `notificar-inscricao` a cada inscrição.
-- Edge Function envia e-mail via Resend. Segredos (Project Settings → Edge Functions → Secrets):
-  - `RESEND_API_KEY` — obrigatório (https://resend.com, plano gratuito).
+- Edge Function envia e-mail pela **Brevo** (API transacional). Segredos (Project Settings → Edge Functions → Secrets):
+  - `BREVO_API_KEY` — obrigatório (Brevo → SMTP & API → API Keys).
   - `NOTIFY_EMAIL` — destino (padrão: solysprojetos@gmail.com).
-  - `NOTIFY_FROM` — remetente (padrão: `Noite de Gratidão <onboarding@resend.dev>`; com domínio próprio verificado no Resend pode usar outro).
+  - `NOTIFY_FROM_EMAIL` — remetente; precisa ser um remetente verificado na Brevo (padrão: igual ao destino).
+  - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
 
 ## Publicar o link
 GitHub → Settings → Pages → *Deploy from a branch* → branch + pasta `/ (root)`.
