@@ -12,7 +12,7 @@
   (Database → Vault) e a função os lê pela RPC `segredo_evento` (só a chave de serviço tem acesso):
   - `BREVO_API_KEY` — chave de API da Brevo (obrigatório).
   - `NOTIFY_EMAIL` — destino dos avisos (padrão: solysprojetos@gmail.com).
-  - `NOTIFY_FROM_EMAIL` — remetente; precisa ser verificado na Brevo (padrão: igual ao destino).
+  - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo (configurado: altaimpactoprojetos@gmail.com).
   - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
   Uma variável de ambiente com o mesmo nome, se existir, tem prioridade sobre o Vault.
 
