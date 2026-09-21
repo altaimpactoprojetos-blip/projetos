@@ -27,3 +27,4 @@ Arquivos na raiz do repositório; `CNAME` = `juanbusiness.online`.
 Links finais:
 - Convite: https://juanbusiness.online/
 - Inscrições: https://juanbusiness.online/inscricoes.html
+
