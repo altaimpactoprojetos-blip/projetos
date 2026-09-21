@@ -17,10 +17,11 @@
 - Edge Function envia ao **convidado** um e-mail de confirmação pela **Brevo** (API transacional), com número da inscrição e dados da festa.
   Segredos no **Vault** do Supabase (Database → Vault), lidos pela RPC `segredo_evento` (só a chave de serviço):
   - `BREVO_API_KEY` — chave de API da Brevo.
-  - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo. Hoje: altaimpactoprojetos@gmail.com; após autenticar o domínio, trocar para `convite@juanbusiness.online`.
+  - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo: `convite@juanbusiness.online` (domínio autenticado).
   - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
   - `NOTIFY_REPLY_TO` — para onde vão as respostas dos convidados (padrão: altaimpactoprojetos@gmail.com).
 - Edge Function `qr-inscricao` (pública, por UUID) gera a imagem PNG do QR code usada no e-mail.
+- Edge Function `brevo-dominio` (uso único, já executada) autentica o domínio na Brevo e cadastra o remetente.
 - O organizador acompanha as inscrições em `inscricoes.html` (não recebe e-mail).
 
 ## Publicação (GitHub Pages + domínio)
@@ -32,7 +33,7 @@ Arquivos na raiz do repositório; `CNAME` = `juanbusiness.online`.
   - `CNAME` www → altaimpactoprojetos-blip.github.io
 
 ### Domínio na Brevo (e-mail saindo de @juanbusiness.online)
-O domínio `juanbusiness.online` já está cadastrado na Brevo (Senders, Domains & Dedicated IPs → Domains). Para autenticar, criar no DNS da Hostinger:
+O domínio `juanbusiness.online` está **autenticado** na Brevo (Senders, Domains & Dedicated IPs → Domains) e o remetente `convite@juanbusiness.online` está cadastrado. Registros criados no DNS da Hostinger:
 
 | Tipo  | Nome (host)         | Valor |
 |-------|---------------------|-------|
@@ -41,10 +42,7 @@ O domínio `juanbusiness.online` já está cadastrado na Brevo (Senders, Domains
 | CNAME | `brevo2._domainkey` | `b2.juanbusiness-online.dkim.brevo.com` |
 | TXT   | `_dmarc`            | `v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com` |
 
-Esses registros não interferem nos registros A/CNAME do GitHub Pages. Depois que a Brevo marcar o domínio como autenticado:
-1. Na Brevo, adicionar o remetente `convite@juanbusiness.online` (Senders).
-2. No Vault do Supabase, trocar `NOTIFY_FROM_EMAIL` para `convite@juanbusiness.online`.
-3. As respostas dos convidados continuam indo para o Gmail via `NOTIFY_REPLY_TO`.
+Esses registros não interferem nos registros A/CNAME do GitHub Pages. As respostas dos convidados vão para o Gmail via `NOTIFY_REPLY_TO`.
 
 Links finais:
 - Convite: https://juanbusiness.online/
