@@ -16,7 +16,14 @@
   - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
   Uma variável de ambiente com o mesmo nome, se existir, tem prioridade sobre o Vault.
 
-## Publicar o link
-GitHub → Settings → Pages → *Deploy from a branch* → branch + pasta `/ (root)`.
-- Convite: `https://altaimpactoprojetos-blip.github.io/projetos/aniversario-juan/`
-- Inscrições: `https://altaimpactoprojetos-blip.github.io/projetos/aniversario-juan/inscricoes.html`
+## Publicação (GitHub Pages + domínio)
+Arquivos na raiz do repositório; `CNAME` = `juanbusiness.online`.
+
+- GitHub → Settings → Pages → Source: *Deploy from a branch*, branch `claude/birthday-signup-link-ifrv9h`, pasta `/ (root)`. Custom domain: `juanbusiness.online`, marcar *Enforce HTTPS* quando liberar.
+- DNS do domínio (onde ele foi registrado):
+  - `A` @ → 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
+  - `CNAME` www → altaimpactoprojetos-blip.github.io
+
+Links finais:
+- Convite: https://juanbusiness.online/
+- Inscrições: https://juanbusiness.online/inscricoes.html
