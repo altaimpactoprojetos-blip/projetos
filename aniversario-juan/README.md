@@ -1,15 +1,19 @@
-# Noite de Gratidão — convite e confirmação de presença (Juan, 19/10)
+# Noite de Gratidão — convite e inscrições (Juan, 19/10 às 19h)
 
-Página única (`index.html`), sem dependências: fotos já embutidas, fontes do Google Fonts.
+## Arquivos
+- `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
+- `inscricoes.html` — painel restrito para ver quem se inscreveu (login com Supabase Auth), busca e download em CSV.
 
-## Como publicar o link
-GitHub → Settings → Pages → Source: *Deploy from a branch* → escolha o branch e a pasta `/ (root)`.
-O link fica: `https://altaimpactoprojetos-blip.github.io/projetos/aniversario-juan/`
+## Backend (Supabase, projeto **CRM Vitalício** `lffzxqwgqgsiumunahyt`)
+- Tabela `public.inscricoes_aniversario_juan` (nome, telefone, acompanhantes, recado, criado_em).
+- RLS: a chave pública só **insere**; só usuário **logado** lê.
+- Gatilho `trg_notificar_inscricao_aniversario_juan` (pg_net) chama a Edge Function `notificar-inscricao` a cada inscrição.
+- Edge Function envia e-mail via Resend. Segredos (Project Settings → Edge Functions → Secrets):
+  - `RESEND_API_KEY` — obrigatório (https://resend.com, plano gratuito).
+  - `NOTIFY_EMAIL` — destino (padrão: solysprojetos@gmail.com).
+  - `NOTIFY_FROM` — remetente (padrão: `Noite de Gratidão <onboarding@resend.dev>`; com domínio próprio verificado no Resend pode usar outro).
 
-## Como ativar o envio das confirmações
-No fim do `index.html`, bloco `CONFIGURAÇÃO DO ENVIO`:
-
-- **Opção A – banco (Supabase):** preencher `SUPABASE_URL` e `SUPABASE_KEY` (chave publishable) e ter a tabela `confirmacoes_aniversario_juan` com política de INSERT para `anon`.
-- **Opção B – WhatsApp:** preencher `WHATSAPP` com o número do Juan (só dígitos, com 55 + DDD). O convidado envia a confirmação como mensagem pronta.
-
-Enquanto nada estiver preenchido, o botão avisa que o envio ainda não foi ativado.
+## Publicar o link
+GitHub → Settings → Pages → *Deploy from a branch* → branch + pasta `/ (root)`.
+- Convite: `https://altaimpactoprojetos-blip.github.io/projetos/aniversario-juan/`
+- Inscrições: `https://altaimpactoprojetos-blip.github.io/projetos/aniversario-juan/inscricoes.html`

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Inscrições · Noite de Gratidão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap">
+<style>
+:root{--ivory:#F8F5EF;--white:#fff;--gold:#C9A24A;--gold-deep:#A8842E;--gold-soft:#E9D9B0;--ink:#2B2620;--taupe:#6F665C;--line:#EDE6D8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:"Jost","Helvetica Neue",Arial,sans-serif;font-weight:300;font-size:15px;line-height:1.5}
+.wrap{max-width:960px;margin:0 auto;padding:40px 20px 80px}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:34px;margin:0}
+h1 em{color:var(--gold-deep);font-style:italic;font-weight:500}
+.label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;margin:0 0 6px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.card{background:var(--white);border:1px solid var(--gold-soft);padding:28px;box-shadow:0 18px 44px rgba(43,38,32,.06)}
+.login{max-width:420px;margin:60px auto 0}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
+input{font:inherit;padding:12px 14px;border:1px solid #E6E0D5;background:#FBF9F5;border-radius:2px;width:100%}
+input:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+button{font:inherit;font-weight:500;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:13px 26px;border:0;border-radius:2px;background:linear-gradient(180deg,#D9B85F,#B8923C);color:#fff;cursor:pointer}
+button.ghost{background:none;color:var(--taupe);border:1px solid var(--line);padding:9px 16px}
+.err{color:#9B3B2E;font-size:14px;min-height:1.3em;margin:8px 0 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--gold-soft);background:var(--white);margin-bottom:24px}
+.stat{padding:20px;text-align:center}
+.stat + .stat{border-left:1px solid var(--gold-soft)}
+.stat .n{font-family:"Cormorant Garamond",Georgia,serif;font-size:36px;font-weight:600;line-height:1;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.tools input{max-width:320px}
+.tbl{overflow-x:auto;background:var(--white);border:1px solid var(--gold-soft)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;background:#FBF9F5}
+td.num{text-align:center;font-variant-numeric:tabular-nums}
+td.when{white-space:nowrap;color:var(--taupe);font-size:13px}
+td.recado{color:var(--taupe);max-width:320px}
+tr:last-child td{border-bottom:0}
+.empty{padding:40px;text-align:center;color:var(--taupe)}
+a{color:var(--gold-deep)}
+@media (max-width:640px){.stats{grid-template-columns:1fr}.stat + .stat{border-left:0;border-top:1px solid var(--gold-soft)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <p class="label">Noite de Gratidão · 19/10 · 19h</p>
+      <h1>Inscrições pelo <em>link</em></h1>
+    </div>
+    <button class="ghost" id="sair" hidden type="button">Sair</button>
+  </div>
+
+  <div class="card login" id="login">
+    <p class="label">Acesso restrito</p>
+    <p style="margin:0 0 20px;color:var(--taupe)">Entre com o e-mail e a senha cadastrados no Supabase (projeto CRM Vitalício).</p>
+    <form id="loginForm">
+      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required></div>
+      <button type="submit" id="entrar">Entrar</button>
+      <p class="err" id="loginErr"></p>
+    </form>
+  </div>
+
+  <div id="painel" hidden>
+    <div class="stats">
+      <div class="stat"><p class="label">Inscrições</p><p class="n" id="stInscricoes">0</p></div>
+      <div class="stat"><p class="label">Pessoas no total</p><p class="n" id="stPessoas">0</p></div>
+      <div class="stat"><p class="label">Última inscrição</p><p class="n" id="stUltima" style="font-size:22px">—</p></div>
+    </div>
+    <div class="tools">
+      <input id="busca" type="search" placeholder="Buscar por nome ou telefone">
+      <button class="ghost" id="atualizar" type="button">Atualizar</button>
+      <button class="ghost" id="csv" type="button">Baixar CSV</button>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Nome</th><th>WhatsApp</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th></tr></thead>
+        <tbody id="linhas"></tbody>
+      </table>
+      <div class="empty" id="vazio" hidden>Nenhuma inscrição ainda.</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  var SUPABASE_URL = "https://lffzxqwgqgsiumunahyt.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_ckFnucj9hoCwIbdX9HMC_A_XT006uDI";
+  var TABLE = "inscricoes_aniversario_juan";
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  var dados = [];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  var fmt = function(iso){ return new Date(iso).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
+
+  function render(){
+    var q = $("busca").value.trim().toLowerCase();
+    var lista = dados.filter(function(r){ return !q || (r.nome||"").toLowerCase().indexOf(q) >= 0 || (r.telefone||"").toLowerCase().indexOf(q) >= 0; });
+    $("linhas").innerHTML = lista.map(function(r){
+      var tel = r.telefone ? '<a href="https://wa.me/' + esc(r.telefone.replace(/\D/g,"")) + '" target="_blank" rel="noopener">' + esc(r.telefone) + '</a>' : "—";
+      return "<tr><td>" + esc(r.nome) + "</td><td>" + tel + '</td><td class="num">' + esc(r.acompanhantes) + '</td><td class="recado">' + (esc(r.recado) || "—") + '</td><td class="when">' + fmt(r.criado_em) + "</td></tr>";
+    }).join("");
+    $("vazio").hidden = lista.length > 0;
+    $("stInscricoes").textContent = dados.length;
+    $("stPessoas").textContent = dados.reduce(function(a, r){ return a + 1 + (Number(r.acompanhantes) || 0); }, 0);
+    $("stUltima").textContent = dados.length ? fmt(dados[0].criado_em) : "—";
+  }
+
+  async function carregar(){
+    var res = await sb.from(TABLE).select("id,nome,telefone,acompanhantes,recado,criado_em").order("criado_em", {ascending:false});
+    if (res.error) { $("loginErr").textContent = "Erro ao carregar: " + res.error.message; return; }
+    dados = res.data || []; render();
+  }
+
+  function mostrar(logado){
+    $("login").hidden = logado; $("painel").hidden = !logado; $("sair").hidden = !logado;
+    if (logado) carregar();
+  }
+
+  $("loginForm").addEventListener("submit", async function(ev){
+    ev.preventDefault(); $("entrar").disabled = true; $("loginErr").textContent = "";
+    var r = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("senha").value });
+    $("entrar").disabled = false;
+    if (r.error) { $("loginErr").textContent = "Não foi possível entrar. Confira e-mail e senha."; return; }
+    mostrar(true);
+  });
+  $("sair").addEventListener("click", async function(){ await sb.auth.signOut(); dados = []; mostrar(false); });
+  $("atualizar").addEventListener("click", carregar);
+  $("busca").addEventListener("input", render);
+  $("csv").addEventListener("click", function(){
+    var linhas = [["Nome","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.nome, r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
+    var csv = "﻿" + linhas.map(function(l){ return l.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(";"); }).join("\n");
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})); a.download = "inscricoes-noite-de-gratidao.csv"; a.click();
+  });
+
+  sb.auth.getSession().then(function(r){ mostrar(!!(r.data && r.data.session)); });
+})();
+</script>
+</body>
+</html>
