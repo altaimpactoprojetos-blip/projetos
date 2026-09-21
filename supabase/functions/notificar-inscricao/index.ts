@@ -6,7 +6,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 // Envia o aviso por e-mail pela API transacional da Brevo. Os segredos ficam no Vault do Supabase
 // (BREVO_API_KEY, NOTIFY_EMAIL, NOTIFY_FROM_EMAIL, NOTIFY_FROM_NAME) e podem ser sobrescritos por variáveis de ambiente.
 
-type Row = { id?: string; nome: string; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
+type Row = { id?: string; numero?: number; nome: string; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
 
 const esc = (s: unknown) =>
   String(s ?? "").replace(/[&<>"']/g, (c) =>
@@ -32,7 +32,7 @@ Deno.serve(async (req: Request) => {
       if (i) await sleep(1500);
       const { data } = await supabase
         .from("inscricoes_aniversario_juan")
-        .select("id, nome, telefone, acompanhantes, recado, criado_em")
+        .select("id, numero, nome, telefone, acompanhantes, recado, criado_em")
         .eq("id", id)
         .maybeSingle();
       row = data as Row | null;
@@ -67,7 +67,8 @@ Deno.serve(async (req: Request) => {
   const html = `
     <div style="font-family:Georgia,serif;max-width:520px;margin:auto;padding:24px;border:1px solid #E9D9B0">
       <p style="letter-spacing:.3em;font-size:11px;color:#A8842E;margin:0 0 8px">NOITE DE GRATIDÃO · NOVA INSCRIÇÃO</p>
-      <h2 style="margin:0 0 16px;color:#2B2620">${esc(row.nome)}</h2>
+      <h2 style="margin:0 0 4px;color:#2B2620">${esc(row.nome)}</h2>
+      <p style="font-family:Arial,sans-serif;font-size:13px;color:#A8842E;margin:0 0 16px">Inscrição nº ${String(row.numero ?? "").padStart(3, "0")}</p>
       <table style="font-family:Arial,sans-serif;font-size:14px;color:#2B2620;border-collapse:collapse">
         <tr><td style="padding:4px 12px 4px 0;color:#6F665C">WhatsApp</td><td>${esc(row.telefone) || "—"}</td></tr>
         <tr><td style="padding:4px 12px 4px 0;color:#6F665C">Acompanhantes</td><td>${esc(row.acompanhantes)}</td></tr>
@@ -83,7 +84,7 @@ Deno.serve(async (req: Request) => {
     body: JSON.stringify({
       sender: { name: fromName, email: fromEmail },
       to: [{ email: to }],
-      subject: `Nova inscrição: ${row.nome} (${pessoas} pessoa${pessoas > 1 ? "s" : ""})`,
+      subject: `Nova inscrição nº ${String(row.numero ?? "").padStart(3, "0")}: ${row.nome} (${pessoas} pessoa${pessoas > 1 ? "s" : ""})`,
       htmlContent: html,
       tags: ["noite-de-gratidao"],
     }),
