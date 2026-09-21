@@ -4,6 +4,12 @@
 - `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
 - `inscricoes.html` — painel restrito para ver quem se inscreveu (login com Supabase Auth), busca e download em CSV.
 
+## Estrutura do repositório
+- `index.html` / `inscricoes.html` — site.
+- `.github/workflows/pages.yml` — publicação automática no GitHub Pages.
+- `supabase/migrations/*.sql` — SQL do banco (tabela, permissões, RPCs, gatilho).
+- `supabase/functions/*` — Edge Functions (e-mail ao convidado e imagem do QR).
+
 ## Backend (Supabase, projeto **CRM Vitalício** `lffzxqwgqgsiumunahyt`)
 - Tabela `public.inscricoes_aniversario_juan` (nome, telefone, acompanhantes, recado, criado_em).
 - RLS: a chave pública só **insere**; só usuário **logado** lê.
