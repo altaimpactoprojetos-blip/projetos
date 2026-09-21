@@ -253,6 +253,10 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
             <label for="nome">Seu nome completo</label>
             <input id="nome" name="nome" type="text" autocomplete="name" required minlength="2" maxlength="120" placeholder="Como devemos te chamar">
           </div>
+          <div class="field">
+            <label for="email">Seu e-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160" placeholder="Para receber a confirmação">
+          </div>
           <div class="row">
             <div class="field">
               <label for="telefone">WhatsApp</label>
@@ -281,7 +285,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
       <div class="done" id="done" hidden>
         <p class="label">Presença confirmada</p>
         <p class="big">Obrigado, <span class="gold" id="doneNome">você</span>!</p>
-        <p class="lead-done">Seu lugar está garantido. Anote os detalhes:</p>
+        <p class="lead-done">Seu lugar está garantido. Enviamos a confirmação para o seu e-mail.</p>
         <dl class="resumo">
           <div><dt>Data</dt><dd>19 de outubro</dd></div>
           <div><dt>Horário</dt><dd>19h</dd></div>
@@ -2652,8 +2656,11 @@ var qrcode = function() {
     ev.preventDefault();
     var nome = form.nome.value.trim();
     if (nome.length < 2) { show("Digite seu nome para confirmar.", true); form.nome.focus(); return; }
+    var email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { show("Digite um e-mail válido para receber a confirmação.", true); form.email.focus(); return; }
     var payload = {
       nome: nome,
+      email: email,
       telefone: form.telefone.value.trim() || null,
       acompanhantes: parseInt(form.acompanhantes.value, 10) || 0,
       recado: form.recado.value.trim() || null
@@ -2666,7 +2673,7 @@ var qrcode = function() {
           method: "POST",
           headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY,
                      "Authorization": "Bearer " + SUPABASE_KEY },
-          body: JSON.stringify({ p_nome: payload.nome, p_telefone: payload.telefone, p_acompanhantes: payload.acompanhantes, p_recado: payload.recado })
+          body: JSON.stringify({ p_nome: payload.nome, p_email: payload.email, p_telefone: payload.telefone, p_acompanhantes: payload.acompanhantes, p_recado: payload.recado })
         });
         if (!r.ok) throw new Error("HTTP " + r.status);
         var dados = await r.json();

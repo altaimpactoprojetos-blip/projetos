@@ -2,17 +2,18 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 // Chamada pelo gatilho do banco (pg_net) a cada nova inscrição.
-// Recebe a linha em `record`; se vier só o id, busca com a chave de serviço.
-// Envia o aviso por e-mail pela API transacional da Brevo. Os segredos ficam no Vault do Supabase
-// (BREVO_API_KEY, NOTIFY_EMAIL, NOTIFY_FROM_EMAIL, NOTIFY_FROM_NAME) e podem ser sobrescritos por variáveis de ambiente.
+// Envia ao CONVIDADO um e-mail de confirmação pela API da Brevo.
+// Segredos no Vault (RPC segredo_evento): BREVO_API_KEY, NOTIFY_FROM_EMAIL, NOTIFY_FROM_NAME.
 
-type Row = { id?: string; numero?: number; nome: string; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
+type Row = { id?: string; numero?: number; nome: string; email?: string | null; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
 
 const esc = (s: unknown) =>
   String(s ?? "").replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
   );
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const json = (o: unknown, status = 200) =>
+  new Response(JSON.stringify(o), { status, headers: { "Content-Type": "application/json" } });
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
@@ -32,17 +33,14 @@ Deno.serve(async (req: Request) => {
       if (i) await sleep(1500);
       const { data } = await supabase
         .from("inscricoes_aniversario_juan")
-        .select("id, numero, nome, telefone, acompanhantes, recado, criado_em")
+        .select("id, numero, nome, email, telefone, acompanhantes, recado, criado_em")
         .eq("id", id)
         .maybeSingle();
       row = data as Row | null;
     }
   }
-  if (!row) return new Response(JSON.stringify({ ok: false, erro: "inscrição não encontrada" }), { status: 404 });
-
-  const { count } = await supabase
-    .from("inscricoes_aniversario_juan")
-    .select("id", { count: "exact", head: true });
+  if (!row) return json({ ok: false, erro: "inscrição não encontrada" }, 404);
+  if (!row.email) return json({ ok: false, erro: "inscrição sem e-mail; nada a enviar", numero: row.numero });
 
   async function segredo(nome: string): Promise<string | undefined> {
     const env = Deno.env.get(nome);
@@ -52,46 +50,58 @@ Deno.serve(async (req: Request) => {
   }
 
   const apiKey = await segredo("BREVO_API_KEY");
-  const to = (await segredo("NOTIFY_EMAIL")) ?? "solysprojetos@gmail.com";
-  const fromEmail = (await segredo("NOTIFY_FROM_EMAIL")) ?? to;
+  const fromEmail = (await segredo("NOTIFY_FROM_EMAIL")) ?? "altaimpactoprojetos@gmail.com";
   const fromName = (await segredo("NOTIFY_FROM_NAME")) ?? "Noite de Gratidão";
-  if (!apiKey) {
-    console.warn("BREVO_API_KEY não configurada; e-mail não enviado.");
-    return new Response(JSON.stringify({ ok: false, erro: "BREVO_API_KEY ausente", inscricao: row.nome }), {
-      status: 200, headers: { "Content-Type": "application/json" },
-    });
-  }
+  if (!apiKey) return json({ ok: false, erro: "BREVO_API_KEY ausente" });
 
-  const quando = new Date(row.criado_em).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+  const numero = String(row.numero ?? "").padStart(3, "0");
+  const primeiroNome = row.nome.trim().split(/\s+/)[0];
   const pessoas = 1 + Number(row.acompanhantes || 0);
+  const mapa = "https://www.google.com/maps/search/?api=1&query=Buffet+Monte+Rey";
+
+  const linha = (k: string, v: string) => `
+    <tr>
+      <td style="padding:10px 0;border-bottom:1px solid #F1EBDD;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#A8842E">${k}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #F1EBDD;text-align:right;font-family:Georgia,serif;font-size:17px;color:#2B2620">${v}</td>
+    </tr>`;
+
   const html = `
-    <div style="font-family:Georgia,serif;max-width:520px;margin:auto;padding:24px;border:1px solid #E9D9B0">
-      <p style="letter-spacing:.3em;font-size:11px;color:#A8842E;margin:0 0 8px">NOITE DE GRATIDÃO · NOVA INSCRIÇÃO</p>
-      <h2 style="margin:0 0 4px;color:#2B2620">${esc(row.nome)}</h2>
-      <p style="font-family:Arial,sans-serif;font-size:13px;color:#A8842E;margin:0 0 16px">Inscrição nº ${String(row.numero ?? "").padStart(3, "0")}</p>
-      <table style="font-family:Arial,sans-serif;font-size:14px;color:#2B2620;border-collapse:collapse">
-        <tr><td style="padding:4px 12px 4px 0;color:#6F665C">WhatsApp</td><td>${esc(row.telefone) || "—"}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;color:#6F665C">Acompanhantes</td><td>${esc(row.acompanhantes)}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;color:#6F665C">Recado</td><td>${esc(row.recado) || "—"}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;color:#6F665C">Quando</td><td>${esc(quando)}</td></tr>
+  <div style="background:#F8F5EF;padding:32px 16px;font-family:Arial,sans-serif;color:#2B2620">
+    <div style="max-width:520px;margin:auto;background:#fff;border:1px solid #E9D9B0;padding:36px 28px">
+      <p style="text-align:center;letter-spacing:.34em;font-size:11px;color:#A8842E;margin:0 0 10px">JUAN CONVIDA</p>
+      <p style="text-align:center;font-family:Georgia,serif;font-size:34px;line-height:1.1;margin:0;color:#4A3B22;letter-spacing:.04em">NOITE DE</p>
+      <p style="text-align:center;font-family:Georgia,serif;font-size:38px;line-height:1.1;margin:0 0 22px;color:#B8923C;letter-spacing:.04em">GRATIDÃO</p>
+      <p style="text-align:center;letter-spacing:.3em;font-size:11px;color:#A8842E;margin:0 0 6px">PRESENÇA CONFIRMADA</p>
+      <p style="text-align:center;font-family:Georgia,serif;font-size:26px;margin:0 0 8px">Obrigado, ${esc(primeiroNome)}!</p>
+      <p style="text-align:center;color:#6F665C;font-size:14px;margin:0 0 24px">Seu lugar está garantido. Guarde este e-mail e apresente o número na entrada.</p>
+      <div style="text-align:center;background:#F8F5EF;border:1px solid #E9D9B0;padding:16px;margin:0 0 24px">
+        <p style="letter-spacing:.28em;font-size:11px;color:#A8842E;margin:0 0 6px">SUA INSCRIÇÃO</p>
+        <p style="font-family:Georgia,serif;font-size:40px;font-weight:bold;margin:0;color:#2B2620">Nº ${numero}</p>
+        <p style="color:#6F665C;font-size:13px;margin:6px 0 0">${esc(row.nome)} · ${pessoas} pessoa${pessoas > 1 ? "s" : ""}</p>
+      </div>
+      <table style="width:100%;border-collapse:collapse;border-top:1px solid #E9D9B0">
+        ${linha("Data", "19 de outubro")}
+        ${linha("Horário", "19h")}
+        ${linha("Local", `<a href="${mapa}" style="color:#2B2620;text-decoration:none;border-bottom:1px solid #E9D9B0">Monte Rey Buffet</a>`)}
+        ${linha("Dress code", "Tons pastéis")}
       </table>
-      <p style="font-family:Arial,sans-serif;font-size:13px;color:#6F665C;margin-top:20px">Total de inscrições até agora: <strong>${count ?? "?"}</strong></p>
-    </div>`;
+      <p style="text-align:center;color:#6F665C;font-size:13px;margin:26px 0 0">Sua presença torna essa noite ainda mais especial.</p>
+      <p style="text-align:center;font-family:Georgia,serif;font-style:italic;font-size:18px;color:#A8842E;margin:10px 0 0">Com carinho, Juan</p>
+    </div>
+  </div>`;
 
   const r = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json", "api-key": apiKey },
     body: JSON.stringify({
       sender: { name: fromName, email: fromEmail },
-      to: [{ email: to }],
-      subject: `Nova inscrição nº ${String(row.numero ?? "").padStart(3, "0")}: ${row.nome} (${pessoas} pessoa${pessoas > 1 ? "s" : ""})`,
+      to: [{ email: row.email, name: row.nome }],
+      subject: `Presença confirmada · Noite de Gratidão (inscrição nº ${numero})`,
       htmlContent: html,
-      tags: ["noite-de-gratidao"],
+      tags: ["noite-de-gratidao", "confirmacao-convidado"],
     }),
   });
   const txt = await r.text();
   if (!r.ok) console.error("Brevo falhou:", r.status, txt);
-  return new Response(JSON.stringify({ ok: r.ok, status: r.status, brevo: txt }), {
-    status: 200, headers: { "Content-Type": "application/json" },
-  });
+  return json({ ok: r.ok, status: r.status, brevo: txt });
 });

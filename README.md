@@ -8,13 +8,12 @@
 - Tabela `public.inscricoes_aniversario_juan` (nome, telefone, acompanhantes, recado, criado_em).
 - RLS: a chave pública só **insere**; só usuário **logado** lê.
 - Gatilho `trg_notificar_inscricao_aniversario_juan` (pg_net) chama a Edge Function `notificar-inscricao` a cada inscrição.
-- Edge Function envia e-mail pela **Brevo** (API transacional). Os segredos ficam no **Vault** do Supabase
-  (Database → Vault) e a função os lê pela RPC `segredo_evento` (só a chave de serviço tem acesso):
-  - `BREVO_API_KEY` — chave de API da Brevo (obrigatório).
-  - `NOTIFY_EMAIL` — destino dos avisos (padrão: solysprojetos@gmail.com).
-  - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo (configurado: altaimpactoprojetos@gmail.com).
+- Edge Function envia ao **convidado** um e-mail de confirmação pela **Brevo** (API transacional), com número da inscrição e dados da festa.
+  Segredos no **Vault** do Supabase (Database → Vault), lidos pela RPC `segredo_evento` (só a chave de serviço):
+  - `BREVO_API_KEY` — chave de API da Brevo.
+  - `NOTIFY_FROM_EMAIL` — remetente verificado na Brevo (altaimpactoprojetos@gmail.com).
   - `NOTIFY_FROM_NAME` — nome do remetente (padrão: "Noite de Gratidão").
-  Uma variável de ambiente com o mesmo nome, se existir, tem prioridade sobre o Vault.
+- O organizador acompanha as inscrições em `inscricoes.html` (não recebe e-mail).
 
 ## Publicação (GitHub Pages + domínio)
 Arquivos na raiz do repositório; `CNAME` = `juanbusiness.online`.

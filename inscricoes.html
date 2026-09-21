@@ -71,13 +71,13 @@ a{color:var(--gold-deep)}
       <div class="stat"><p class="label">Última inscrição</p><p class="n" id="stUltima" style="font-size:22px">—</p></div>
     </div>
     <div class="tools">
-      <input id="busca" type="search" placeholder="Buscar por nome ou telefone">
+      <input id="busca" type="search" placeholder="Buscar por nome, e-mail ou telefone">
       <button class="ghost" id="atualizar" type="button">Atualizar</button>
       <button class="ghost" id="csv" type="button">Baixar CSV</button>
     </div>
     <div class="tbl">
       <table>
-        <thead><tr><th style="text-align:center">Nº</th><th>Nome</th><th>WhatsApp</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th></tr></thead>
+        <thead><tr><th style="text-align:center">Nº</th><th>Nome</th><th>Contato</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th></tr></thead>
         <tbody id="linhas"></tbody>
       </table>
       <div class="empty" id="vazio" hidden>Nenhuma inscrição ainda.</div>
@@ -100,9 +100,10 @@ a{color:var(--gold-deep)}
 
   function render(){
     var q = $("busca").value.trim().toLowerCase();
-    var lista = dados.filter(function(r){ return !q || (r.nome||"").toLowerCase().indexOf(q) >= 0 || (r.telefone||"").toLowerCase().indexOf(q) >= 0; });
+    var lista = dados.filter(function(r){ return !q || (r.nome||"").toLowerCase().indexOf(q) >= 0 || (r.telefone||"").toLowerCase().indexOf(q) >= 0 || (r.email||"").toLowerCase().indexOf(q) >= 0; });
     $("linhas").innerHTML = lista.map(function(r){
       var tel = r.telefone ? '<a href="https://wa.me/' + esc(r.telefone.replace(/\D/g,"")) + '" target="_blank" rel="noopener">' + esc(r.telefone) + '</a>' : "—";
+      if (r.email) tel += '<br><span style="color:var(--taupe);font-size:13px">' + esc(r.email) + '</span>';
       return '<tr><td class="num">' + String(r.numero || "").padStart(3, "0") + "</td><td>" + esc(r.nome) + "</td><td>" + tel + '</td><td class="num">' + esc(r.acompanhantes) + '</td><td class="recado">' + (esc(r.recado) || "—") + '</td><td class="when">' + fmt(r.criado_em) + "</td></tr>";
     }).join("");
     $("vazio").hidden = lista.length > 0;
@@ -112,7 +113,7 @@ a{color:var(--gold-deep)}
   }
 
   async function carregar(){
-    var res = await sb.from(TABLE).select("id,numero,nome,telefone,acompanhantes,recado,criado_em").order("criado_em", {ascending:false});
+    var res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em").order("criado_em", {ascending:false});
     if (res.error) { $("loginErr").textContent = "Erro ao carregar: " + res.error.message; return; }
     dados = res.data || []; render();
   }
@@ -133,7 +134,7 @@ a{color:var(--gold-deep)}
   $("atualizar").addEventListener("click", carregar);
   $("busca").addEventListener("input", render);
   $("csv").addEventListener("click", function(){
-    var linhas = [["Nº","Nome","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
+    var linhas = [["Nº","Nome","E-mail","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.email || "", r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
     var csv = "﻿" + linhas.map(function(l){ return l.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(";"); }).join("\n");
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})); a.download = "inscricoes-noite-de-gratidao.csv"; a.click();
   });
