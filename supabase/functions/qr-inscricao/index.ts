@@ -23,7 +23,7 @@ Deno.serve(async (req: Request) => {
 
   const numero = String(row.numero ?? "").padStart(3, "0");
   const pessoas = 1 + Number(row.acompanhantes || 0);
-  const texto = `NOITE DE GRATIDÃO · 19/10 · 19h\nInscrição nº ${numero}\n${row.nome}\n${pessoas} pessoa${pessoas > 1 ? "s" : ""}`;
+  const texto = `NOITE DE GRATIDÃO · 19/10 · 18h\nInscrição nº ${numero}\n${row.nome}\n${pessoas} pessoa${pessoas > 1 ? "s" : ""}`;
 
   const png: Uint8Array = await QRCode.toBuffer(texto, {
     type: "png", errorCorrectionLevel: "M", width: 360, margin: 2,

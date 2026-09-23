@@ -75,9 +75,9 @@ Deno.serve(async (req: Request) => {
 
       <table style="width:100%;border-collapse:collapse;border-top:1px solid #E9D9B0;border-bottom:1px solid #E9D9B0">
         ${linha("Data", "19 de outubro")}
-        ${linha("Horário", "19h")}
+        ${linha("Horário", "18h")}
         ${linha("Local", `<a href="${mapa}" style="color:#2B2620;text-decoration:none;border-bottom:1px solid #E9D9B0">Monte Rey Buffet</a>`)}
-        ${linha("Dress code", "Tons pastéis")}
+        ${linha("Dress code", "Tons claros")}
       </table>
 
       <div style="margin:22px auto 0;max-width:300px;background:#F8F5EF;border:1px solid #E9D9B0;padding:20px 16px 16px">

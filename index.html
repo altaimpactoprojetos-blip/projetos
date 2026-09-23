@@ -197,8 +197,8 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
     <div class="rule-sm"></div>
     <h1>Noite <span class="de">de</span> <em>Gratidão</em></h1>
     <div class="rule">✦</div>
-    <p class="local">19 de outubro · 19h · Monte Rey Buffet</p>
-    <p class="lead">Um momento de celebração e gratidão a Deus. Na elegância do ouro e branco, com a presença de quem o Juan ama. Você!
+    <p class="local">19 de outubro · 18h · Monte Rey Buffet</p>
+    <p class="lead">Um momento de celebração e gratidão a Deus. Na elegância do ouro e branco, com a presença das pessoas especiais na vida de Juan.
       <strong>Sua presença torna essa noite ainda mais especial.</strong>
     </p>
     <a class="cta" href="#confirmar">Confirmar presença</a>
@@ -219,7 +219,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
       </div>
       <div class="cell">
         <p class="label">Horário</p>
-        <p class="value">19h</p>
+        <p class="value">18h</p>
         <p class="sub">Pontualidade é bem-vinda</p>
       </div>
       <div class="cell">
@@ -229,9 +229,9 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
       </div>
       <div class="cell">
         <p class="label">Dress code</p>
-        <p class="value">Tons pastéis</p>
-        <div class="pastels" aria-label="Exemplos de tons pastéis">
-          <span style="background:#F6D9DC"></span><span style="background:#F9E7C6"></span><span style="background:#DDEBD6"></span><span style="background:#D5E4F3"></span><span style="background:#E6DDF2"></span>
+        <p class="value">Tons claros</p>
+        <div class="pastels" aria-label="Exemplos de tons claros">
+          <span style="background:#FFFFFF"></span><span style="background:#F8F4EC"></span><span style="background:#EFE6D6"></span><span style="background:#E8E4DF"></span><span style="background:#F3E9E4"></span>
         </div>
       </div>
     </div>
@@ -242,7 +242,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
   <div class="wrap note">
     <p class="label">Uma palavra do Juan</p>
     <p>Mais um ano de vida é motivo de celebração. E celebrar ao lado de quem caminhou junto torna tudo ainda mais bonito.</p>
-    <p>Venha em tons pastéis e traga o coração cheio de gratidão. O resto, eu cuido.</p>
+    <p>Venha em tons claros e traga o coração cheio de gratidão. O resto, eu cuido.</p>
     <p class="sign">Com carinho, Juan</p>
   </div>
 </section>
@@ -293,9 +293,9 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
         <p class="lead-done">Seu lugar está garantido. Enviamos a confirmação para o seu e-mail.</p>
         <dl class="resumo">
           <div><dt>Data</dt><dd>19 de outubro</dd></div>
-          <div><dt>Horário</dt><dd>19h</dd></div>
+          <div><dt>Horário</dt><dd>18h</dd></div>
           <div><dt>Local</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Buffet+Monte+Rey" target="_blank" rel="noopener">Monte Rey Buffet</a></dd></div>
-          <div><dt>Dress code</dt><dd>Tons pastéis</dd></div>
+          <div><dt>Dress code</dt><dd>Tons claros</dd></div>
         </dl>
         <div class="ticket" id="ticket" hidden>
           <p class="label">Sua inscrição</p>
@@ -323,7 +323,7 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
 
 <footer>
   <p class="f1">Noite de <em>Gratidão</em></p>
-  <p class="f2">19 de outubro · 19h · Monte Rey Buffet · Tons pastéis</p>
+  <p class="f2">19 de outubro · 18h · Monte Rey Buffet · Tons claros</p>
 </footer>
 
 <script>
@@ -2660,13 +2660,13 @@ var qrcode = function() {
       var num = String(dados.numero).padStart(3, "0");
       document.getElementById("doneNumero").textContent = "Nº " + num;
       var pessoas = 1 + (Number(dados.acompanhantes) || 0);
-      var texto = "NOITE DE GRATIDÃO · 19/10 · 19h\nInscrição nº " + num + "\n" + nome + "\n" + pessoas + " pessoa" + (pessoas > 1 ? "s" : "");
+      var texto = "NOITE DE GRATIDÃO · 19/10 · 18h\nInscrição nº " + num + "\n" + nome + "\n" + pessoas + " pessoa" + (pessoas > 1 ? "s" : "");
       var box = document.getElementById("qr"); box.innerHTML = "";
       if (window.qrcode) { var q = qrcode(0, "M"); q.addData(texto, "Byte"); q.make(); box.innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
       document.getElementById("ticket").hidden = false;
       var qrLink = SUPABASE_URL + "/functions/v1/qr-inscricao?id=" + dados.id;
       var resumo = "✦ NOITE DE GRATIDÃO ✦\nPresença confirmada: " + nome + "\nInscrição nº " + num + " · " + pessoas + " pessoa" + (pessoas > 1 ? "s" : "") +
-        "\n\n📅 19 de outubro · 19h\n📍 Monte Rey Buffet\n👗 Dress code: tons pastéis" +
+        "\n\n📅 19 de outubro · 18h\n📍 Monte Rey Buffet\n👗 Dress code: tons claros" +
         "\n\n🎁 Sugestões de presente:\n• Blusa M\n• Calça e short 42\n• Sapato 42/43\n• Perfume" +
         "\n\n🎟️ Meu QR code de entrada: " + qrLink;
       var shareBtn = document.getElementById("shareBtn");
@@ -2739,7 +2739,7 @@ var qrcode = function() {
     }
 
     if (WHATSAPP) {
-      var texto = "Olá, Juan! Confirmo presença na Noite de Gratidão (19/10, às 19h).\n" +
+      var texto = "Olá, Juan! Confirmo presença na Noite de Gratidão (19/10, às 18h).\n" +
         "Nome: " + payload.nome + "\n" +
         "Acompanhantes: " + payload.acompanhantes +
         (payload.recado ? "\nRecado: " + payload.recado : "");

@@ -1,4 +1,4 @@
--- Noite de Gratidão (Juan, 19/10 às 19h) — inscrições pelo site
+-- Noite de Gratidão (Juan, 19/10 às 18h) — inscrições pelo site
 -- Projeto Supabase: CRM Vitalício (lffzxqwgqgsiumunahyt)
 -- Este arquivo reúne, na ordem, tudo que foi aplicado no banco.
 
