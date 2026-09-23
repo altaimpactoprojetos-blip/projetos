@@ -105,6 +105,24 @@ Deno.serve(async (req: Request) => {
     </div>
   </div>`;
 
+  // Versão em texto simples: e-mails só com HTML têm mais chance de cair no spam.
+  const texto = [
+    `Obrigado, ${primeiroNome}! Sua presença na Noite de Gratidão está confirmada.`,
+    "",
+    `Inscrição nº ${numero} · ${row.nome} · ${pessoas} pessoa${pessoas > 1 ? "s" : ""}`,
+    "",
+    "Data: 19 de outubro",
+    "Horário: 18h",
+    `Local: Monte Rey Buffet (${mapa})`,
+    "Dress code: Tons claros",
+    "",
+    "Apresente o QR code deste e-mail na entrada.",
+    "",
+    "Sugestões de presente: blusa M, calça e short 42, sapato 42/43, perfume à sua escolha.",
+    "",
+    "Com carinho, Juan",
+  ].join("\n");
+
   const r = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json", "api-key": apiKey },
@@ -114,6 +132,7 @@ Deno.serve(async (req: Request) => {
       to: [{ email: row.email, name: row.nome }],
       subject: `Presença confirmada · Noite de Gratidão (inscrição nº ${numero})`,
       htmlContent: html,
+      textContent: texto,
       tags: ["noite-de-gratidao", "confirmacao-convidado"],
     }),
   });
