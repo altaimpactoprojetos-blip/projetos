@@ -3,7 +3,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 // Chamada pelo gatilho do banco (pg_net) a cada nova inscrição.
 // Envia ao CONVIDADO um e-mail de confirmação pela API da Brevo.
-// Segredos no Vault (RPC segredo_evento): BREVO_API_KEY, NOTIFY_FROM_EMAIL, NOTIFY_FROM_NAME.
+// Segredos no Vault (RPC segredo_evento): BREVO_API_KEY, NOTIFY_FROM_EMAIL, NOTIFY_FROM_NAME, NOTIFY_REPLY_TO.
 
 type Row = { id?: string; numero?: number; nome: string; email?: string | null; telefone?: string | null; acompanhantes: number; recado?: string | null; criado_em: string };
 
@@ -52,6 +52,8 @@ Deno.serve(async (req: Request) => {
   const apiKey = await segredo("BREVO_API_KEY");
   const fromEmail = (await segredo("NOTIFY_FROM_EMAIL")) ?? "altaimpactoprojetos@gmail.com";
   const fromName = (await segredo("NOTIFY_FROM_NAME")) ?? "Noite de Gratidão";
+  // Quando o remetente é um endereço do domínio (sem caixa de entrada), as respostas vão para cá.
+  const replyTo = (await segredo("NOTIFY_REPLY_TO")) ?? "altaimpactoprojetos@gmail.com";
   if (!apiKey) return json({ ok: false, erro: "BREVO_API_KEY ausente" });
 
   const numero = String(row.numero ?? "").padStart(3, "0");
@@ -108,6 +110,7 @@ Deno.serve(async (req: Request) => {
     headers: { "Content-Type": "application/json", Accept: "application/json", "api-key": apiKey },
     body: JSON.stringify({
       sender: { name: fromName, email: fromEmail },
+      replyTo: { name: fromName, email: replyTo },
       to: [{ email: row.email, name: row.nome }],
       subject: `Presença confirmada · Noite de Gratidão (inscrição nº ${numero})`,
       htmlContent: html,
