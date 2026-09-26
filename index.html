@@ -147,7 +147,7 @@ button.send:disabled{opacity:.6;cursor:wait}
 .ticket .tip{color:var(--taupe);font-size:13px;margin:12px 0 0}
 .presentes{margin:22px auto 0;max-width:300px}
 .presentes .label{margin-bottom:6px}
-.presentes .resumo dd{font-size:17px}
+.presentes .resumo dd{font-size:17px;text-align:right}
 .share{display:flex;width:100%;max-width:300px;margin:22px auto 0;justify-content:center;align-items:center;gap:10px;padding:14px 18px;border:0;border-radius:2px;background:#25D366;color:#fff;font:inherit;font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;cursor:pointer;box-shadow:0 10px 24px rgba(37,211,102,.25)}
 .share:hover{filter:brightness(1.05)}
 
@@ -305,7 +305,8 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
             <div><dt>Blusa</dt><dd>M</dd></div>
             <div><dt>Calça e short</dt><dd>42</dd></div>
             <div><dt>Sapato</dt><dd>42 / 43</dd></div>
-            <div><dt>Perfume</dt><dd>À sua escolha</dd></div>
+            <div><dt>Perfumes</dt><dd>Al Batal / Musaman<br>YSL / Valentino</dd></div>
+            <div><dt>Material</dt><dd>Para video maker</dd></div>
           </dl>
         </div>
         <button class="share" id="shareBtn" type="button" hidden>
@@ -2663,7 +2664,7 @@ var qrcode = function() {
       var qrLink = SUPABASE_URL + "/functions/v1/qr-inscricao?id=" + dados.id;
       var resumo = "✦ NOITE DE GRATIDÃO ✦\nPresença confirmada: " + nome + "\nInscrição nº " + num + " · " + pessoas + " pessoa" + (pessoas > 1 ? "s" : "") +
         "\n\n📅 19 de outubro · 18h\n📍 Monte Rey Buffet\n👗 Dress code: tons claros" +
-        "\n\n🎁 Sugestões de presente:\n• Blusa M\n• Calça e short 42\n• Sapato 42/43\n• Perfume" +
+        "\n\n🎁 Sugestões de presente:\n• Blusa M\n• Calça e short 42\n• Sapato 42/43\n• Perfumes: Al Batal / Musaman / YSL / Valentino\n• Material para video maker" +
         "\n\n🎟️ Meu QR code de entrada: " + qrLink;
       var shareBtn = document.getElementById("shareBtn");
       shareBtn.hidden = false;

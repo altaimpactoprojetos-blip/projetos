@@ -97,7 +97,8 @@ Deno.serve(async (req: Request) => {
           <tr><td style="padding:5px 0;text-align:left;color:#6F665C">Blusa</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px">M</td></tr>
           <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Calça e short</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42</td></tr>
           <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Sapato</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">42 / 43</td></tr>
-          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Perfume</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">à sua escolha</td></tr>
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Perfumes</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">Al Batal / Musaman<br>YSL / Valentino</td></tr>
+          <tr><td style="padding:5px 0;text-align:left;color:#6F665C;border-top:1px solid #F1EBDD">Material</td><td style="padding:5px 0;text-align:right;font-family:Georgia,serif;font-size:16px;border-top:1px solid #F1EBDD">Para video maker</td></tr>
         </table>
       </div>
 
@@ -118,7 +119,7 @@ Deno.serve(async (req: Request) => {
     "",
     "Apresente o QR code deste e-mail na entrada.",
     "",
-    "Sugestões de presente: blusa M, calça e short 42, sapato 42/43, perfume à sua escolha.",
+    "Sugestões de presente: blusa M, calça e short 42, sapato 42/43, perfumes (Al Batal, Musaman, YSL ou Valentino) e material para video maker.",
     "",
     "Com carinho, Juan",
   ].join("\n");
