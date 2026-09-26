@@ -268,14 +268,10 @@ footer .f2{color:var(--taupe);font-size:12px;letter-spacing:.28em;text-transform
               <input id="telefone" name="telefone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="(11) 99999-9999">
             </div>
             <div class="field">
-              <label for="acompanhantes">Acompanhantes</label>
+              <label for="acompanhantes">Acompanhante</label>
               <select id="acompanhantes" name="acompanhantes">
                 <option value="0">Vou sozinho(a)</option>
-                <option value="1">+1 pessoa</option>
-                <option value="2">+2 pessoas</option>
-                <option value="3">+3 pessoas</option>
-                <option value="4">+4 pessoas</option>
-                <option value="5">+5 pessoas</option>
+                <option value="1">+1 acompanhante</option>
               </select>
             </div>
           </div>
@@ -2715,7 +2711,7 @@ var qrcode = function() {
       nome: nome,
       email: email,
       telefone: form.telefone.value.trim() || null,
-      acompanhantes: parseInt(form.acompanhantes.value, 10) || 0,
+      acompanhantes: Math.min(1, Math.max(0, parseInt(form.acompanhantes.value, 10) || 0)),
       recado: form.recado.value.trim() || null
     };
 
