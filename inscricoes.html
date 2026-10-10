@@ -31,7 +31,7 @@ button.ghost{background:none;color:var(--taupe);border:1px solid var(--line);pad
 .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .tools input{max-width:320px}
 .tbl{overflow-x:auto;background:var(--white);border:1px solid var(--gold-soft)}
-table{width:100%;border-collapse:collapse;min-width:640px}
+table{width:100%;border-collapse:collapse;min-width:780px}
 th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;background:#FBF9F5}
 td.num{text-align:center;font-variant-numeric:tabular-nums}
@@ -40,6 +40,16 @@ td.recado{color:var(--taupe);max-width:320px}
 tr:last-child td{border-bottom:0}
 .empty{padding:40px;text-align:center;color:var(--taupe)}
 a{color:var(--gold-deep)}
+.tpl{background:var(--white);border:1px solid var(--gold-soft);margin-bottom:18px}
+.tpl summary{cursor:pointer;padding:14px 18px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
+.tpl .corpo{padding:0 18px 18px}
+.tpl textarea{font:inherit;width:100%;min-height:230px;padding:12px 14px;border:1px solid #E6E0D5;background:#FBF9F5;border-radius:2px;resize:vertical}
+.tpl .dica{color:var(--taupe);font-size:13px;margin:8px 0 12px}
+.tpl code{background:#F3EDE1;padding:1px 5px;border-radius:2px;font-size:12px}
+.wa{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:8px 12px;font-size:11px;letter-spacing:.14em;background:#25D366;color:#fff;border-radius:2px}
+.wa.enviado{background:#fff;color:#128C4A;border:1px solid #9FDDB8}
+td.acao{white-space:nowrap}
+td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
 @media (max-width:640px){.stats{grid-template-columns:1fr}.stat + .stat{border-left:0;border-top:1px solid var(--gold-soft)}}
 </style>
 </head>
@@ -75,9 +85,17 @@ a{color:var(--gold-deep)}
       <button class="ghost" id="atualizar" type="button">Atualizar</button>
       <button class="ghost" id="csv" type="button">Baixar CSV</button>
     </div>
+    <details class="tpl" id="tplBox">
+      <summary>Mensagem de confirmação pelo WhatsApp</summary>
+      <div class="corpo">
+        <textarea id="tplTexto" spellcheck="true"></textarea>
+        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar.</p>
+        <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
+      </div>
+    </details>
     <div class="tbl">
       <table>
-        <thead><tr><th style="text-align:center">Nº</th><th>Nome</th><th>Contato</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th></tr></thead>
+        <thead><tr><th style="text-align:center">Nº</th><th>Nome</th><th>Contato</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th><th>Confirmar</th></tr></thead>
         <tbody id="linhas"></tbody>
       </table>
       <div class="empty" id="vazio" hidden>Nenhuma inscrição ainda.</div>
@@ -93,18 +111,48 @@ a{color:var(--gold-deep)}
   var TABLE = "inscricoes_aniversario_juan";
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var dados = [];
+  var TPL_KEY = "noite_gratidao_tpl_whatsapp";
+  var ENV_KEY = "noite_gratidao_whatsapp_enviados";
+  var TPL_PADRAO = "Olá, {nome}! Tudo bem? 😊\n\n" +
+    "Passando para confirmar sua presença na *Noite de Gratidão* do Juan:\n\n" +
+    "📅 19 de outubro · 18h\n📍 Monte Rey Buffet\n👗 Dress code: tons claros\n\n" +
+    "Sua inscrição é a nº {numero}, para {pessoas}.\n\n" +
+    "Você vai? Responda por favor:\n✅ *SIM* — estarei lá\n❌ *NÃO* — não poderei ir\n\n" +
+    "Obrigado! 🙏";
+  var ler = function(k){ try { return localStorage.getItem(k); } catch (e) { return null; } };
+  var gravar = function(k, v){ try { localStorage.setItem(k, v); } catch (e) {} };
+  var enviados = {};
+  try { enviados = JSON.parse(ler(ENV_KEY) || "{}") || {}; } catch (e) { enviados = {}; }
 
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  // Telefone brasileiro: só dígitos; acrescenta 55 quando vier só DDD + número.
+  function foneWhats(t){
+    var d = String(t || "").replace(/\D/g, "").replace(/^0+/, "");
+    if (d.length === 10 || d.length === 11) d = "55" + d;
+    return d.length >= 12 ? d : "";
+  }
+  function mensagem(r){
+    var pessoas = 1 + (Number(r.acompanhantes) || 0);
+    var completo = String(r.nome || "").trim();
+    var vars = { nome: completo.split(/\s+/)[0] || completo, nome_completo: completo, numero: String(r.numero || "").padStart(3, "0"), pessoas: pessoas + (pessoas > 1 ? " pessoas" : " pessoa") };
+    return ($("tplTexto").value || TPL_PADRAO).replace(/\{(nome_completo|nome|numero|pessoas)\}/g, function(_, k){ return vars[k]; });
+  }
+  function botaoWhats(r){
+    if (!foneWhats(r.telefone)) return '<span style="color:var(--taupe);font-size:13px">sem telefone</span>';
+    var env = enviados[r.id];
+    return '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-wa="' + esc(r.id) + '">' + (env ? "✓ Reenviar" : "WhatsApp") + "</button>" +
+      (env ? "<small>enviado " + fmt(env) + "</small>" : "");
+  }
   var fmt = function(iso){ return new Date(iso).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
 
   function render(){
     var q = $("busca").value.trim().toLowerCase();
     var lista = dados.filter(function(r){ return !q || (r.nome||"").toLowerCase().indexOf(q) >= 0 || (r.telefone||"").toLowerCase().indexOf(q) >= 0 || (r.email||"").toLowerCase().indexOf(q) >= 0; });
     $("linhas").innerHTML = lista.map(function(r){
-      var tel = r.telefone ? '<a href="https://wa.me/' + esc(r.telefone.replace(/\D/g,"")) + '" target="_blank" rel="noopener">' + esc(r.telefone) + '</a>' : "—";
+      var tel = r.telefone ? '<a href="https://wa.me/' + esc(foneWhats(r.telefone) || r.telefone.replace(/\D/g,"")) + '" target="_blank" rel="noopener">' + esc(r.telefone) + '</a>' : "—";
       if (r.email) tel += '<br><span style="color:var(--taupe);font-size:13px">' + esc(r.email) + '</span>';
-      return '<tr><td class="num">' + String(r.numero || "").padStart(3, "0") + "</td><td>" + esc(r.nome) + "</td><td>" + tel + '</td><td class="num">' + esc(r.acompanhantes) + '</td><td class="recado">' + (esc(r.recado) || "—") + '</td><td class="when">' + fmt(r.criado_em) + "</td></tr>";
+      return '<tr><td class="num">' + String(r.numero || "").padStart(3, "0") + "</td><td>" + esc(r.nome) + "</td><td>" + tel + '</td><td class="num">' + esc(r.acompanhantes) + '</td><td class="recado">' + (esc(r.recado) || "—") + '</td><td class="when">' + fmt(r.criado_em) + '</td><td class="acao">' + botaoWhats(r) + "</td></tr>";
     }).join("");
     $("vazio").hidden = lista.length > 0;
     $("stInscricoes").textContent = dados.length;
@@ -133,6 +181,15 @@ a{color:var(--gold-deep)}
   $("sair").addEventListener("click", async function(){ await sb.auth.signOut(); dados = []; mostrar(false); });
   $("atualizar").addEventListener("click", carregar);
   $("busca").addEventListener("input", render);
+  $("tplTexto").value = ler(TPL_KEY) || TPL_PADRAO;
+  $("tplTexto").addEventListener("input", function(){ gravar(TPL_KEY, $("tplTexto").value); });
+  $("tplPadrao").addEventListener("click", function(){ $("tplTexto").value = TPL_PADRAO; gravar(TPL_KEY, TPL_PADRAO); });
+  $("linhas").addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-wa]"); if (!b) return;
+    var r = dados.find(function(x){ return String(x.id) === b.getAttribute("data-wa"); }); if (!r) return;
+    window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener");
+    enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render();
+  });
   $("csv").addEventListener("click", function(){
     var linhas = [["Nº","Nome","E-mail","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.email || "", r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
     var csv = "﻿" + linhas.map(function(l){ return l.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(";"); }).join("\n");

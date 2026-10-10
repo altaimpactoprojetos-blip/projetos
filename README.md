@@ -3,6 +3,7 @@
 ## Arquivos
 - `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
 - `inscricoes.html` — painel restrito para ver quem se inscreveu (login Supabase Auth, usuário `inscricoes@juanbusiness.online`), busca e download em CSV.
+  Botão **WhatsApp** em cada inscrição: abre a conversa (wa.me) com a mensagem de confirmação de presença pronta (SIM/NÃO), um convidado por vez. O texto é editável no painel (campos `{nome}`, `{nome_completo}`, `{numero}`, `{pessoas}`) e fica salvo no navegador, assim como a marcação de quem já recebeu.
 
 ## Estrutura do repositório
 - `index.html` / `inscricoes.html` — site.
