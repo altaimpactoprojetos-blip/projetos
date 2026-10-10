@@ -57,7 +57,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
 <div class="wrap">
   <div class="top">
     <div>
-      <p class="label">Noite de Gratidão · 19/10 · 18h</p>
+      <p class="label">Noite de Gratidão · 19/10 · 18h30</p>
       <h1>Inscrições pelo <em>link</em></h1>
     </div>
     <button class="ghost" id="sair" hidden type="button">Sair</button>
@@ -111,11 +111,11 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   var TABLE = "inscricoes_aniversario_juan";
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var dados = [];
-  var TPL_KEY = "noite_gratidao_tpl_whatsapp";
+  var TPL_KEY = "noite_gratidao_tpl_whatsapp_1830";
   var ENV_KEY = "noite_gratidao_whatsapp_enviados";
   var TPL_PADRAO = "Olá, {nome}! Tudo bem? 😊\n\n" +
     "Passando para confirmar sua presença na *Noite de Gratidão* do Juan:\n\n" +
-    "📅 19 de outubro · 18h\n📍 Monte Rey Buffet\n👗 Dress code: tons claros\n\n" +
+    "📅 19 de outubro · 18h30\n📍 Monte Rey Buffet\n👗 Dress code: tons claros\n\n" +
     "Sua inscrição é a nº {numero}, para {pessoas}.\n\n" +
     "Você vai? Responda por favor:\n✅ *SIM* — estarei lá\n❌ *NÃO* — não poderei ir\n\n" +
     "Obrigado! 🙏";

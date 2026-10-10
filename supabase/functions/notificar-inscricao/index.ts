@@ -77,7 +77,7 @@ Deno.serve(async (req: Request) => {
 
       <table style="width:100%;border-collapse:collapse;border-top:1px solid #E9D9B0;border-bottom:1px solid #E9D9B0">
         ${linha("Data", "19 de outubro")}
-        ${linha("Horário", "18h")}
+        ${linha("Horário", "18h30")}
         ${linha("Local", `<a href="${mapa}" style="color:#2B2620;text-decoration:none;border-bottom:1px solid #E9D9B0">Monte Rey Buffet</a>`)}
         ${linha("Dress code", "Tons claros")}
       </table>
@@ -112,7 +112,7 @@ Deno.serve(async (req: Request) => {
     `Inscrição nº ${numero} · ${row.nome} · ${pessoas} pessoa${pessoas > 1 ? "s" : ""}`,
     "",
     "Data: 19 de outubro",
-    "Horário: 18h",
+    "Horário: 18h30",
     `Local: Monte Rey Buffet (${mapa})`,
     "Dress code: Tons claros",
     "",

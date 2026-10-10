@@ -1,4 +1,4 @@
-# Noite de Gratidão — convite e inscrições (Juan, 19/10 às 18h)
+# Noite de Gratidão — convite e inscrições (Juan, 19/10 às 18h30)
 
 ## Arquivos
 - `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
