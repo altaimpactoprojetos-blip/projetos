@@ -4,7 +4,7 @@
 - `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
 - `inscricoes.html` — painel restrito para ver quem se inscreveu (login Supabase Auth, usuário `inscricoes@juanbusiness.online`), busca e download em CSV.
   Botão **WhatsApp** em cada inscrição: abre a conversa (wa.me) com a mensagem de confirmação de presença pronta (SIM/NÃO), um convidado por vez. O texto é editável no painel (campos `{nome}`, `{nome_completo}`, `{numero}`, `{pessoas}`) e fica salvo no navegador, assim como a marcação de quem já recebeu.
-  Mensagem atual: "É HOJEEEEEE!" (sem link). O botão **Com foto** manda a própria imagem junto: no celular abre o compartilhamento (escolher WhatsApp e o contato; o texto também fica copiado); no computador baixa a foto e abre a conversa para anexar.
+  Mensagem atual: "É HOJEEEEEE!" (sem link). O botão **WhatsApp** manda a foto do convite (`e-hoje.jpg`) junto: no celular abre o compartilhamento (escolher WhatsApp e o contato; o texto também fica copiado); no computador baixa a foto e abre a conversa para anexar.
 
 ## Estrutura do repositório
 - `index.html` / `inscricoes.html` — site.

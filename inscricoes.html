@@ -48,7 +48,6 @@ a{color:var(--gold-deep)}
 .tpl code{background:#F3EDE1;padding:1px 5px;border-radius:2px;font-size:12px}
 .wa{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:8px 12px;font-size:11px;letter-spacing:.14em;background:#25D366;color:#fff;border-radius:2px}
 .wa.enviado{background:#fff;color:#128C4A;border:1px solid #9FDDB8}
-.wa.foto{background:#fff;color:#128C4A;border:1px solid #9FDDB8;margin-left:6px}
 td.acao{white-space:nowrap}
 td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
 @media (max-width:640px){.stats{grid-template-columns:1fr}.stat + .stat{border-left:0;border-top:1px solid var(--gold-soft)}}
@@ -90,7 +89,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
       <summary>Mensagem pelo WhatsApp</summary>
       <div class="corpo">
         <textarea id="tplTexto" spellcheck="true"></textarea>
-        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. No celular, <b>Com foto</b> envia a imagem do convite junto (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar).</p>
+        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. A foto do convite vai junto: no celular abre o compartilhamento (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar); no computador a foto é baixada e a conversa abre para você anexá-la.</p>
         <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
       </div>
     </details>
@@ -142,8 +141,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   function botaoWhats(r){
     if (!foneWhats(r.telefone)) return '<span style="color:var(--taupe);font-size:13px">sem telefone</span>';
     var env = enviados[r.id];
-    return '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-wa="' + esc(r.id) + '">' + (env ? "✓ Reenviar" : "WhatsApp") + "</button>" +
-      '<button type="button" class="wa foto" data-foto="' + esc(r.id) + '">📷 Com foto</button>' +
+    return '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-wa="' + esc(r.id) + '">' + (env ? "✓ Reenviar" : "📷 WhatsApp") + "</button>" +
       (env ? "<small>enviado " + fmt(env) + "</small>" : "");
   }
   var fmt = function(iso){ return new Date(iso).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
@@ -189,10 +187,8 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   function marcarEnviado(r){ enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render(); }
   function abrirConversa(r){ window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener"); }
   $("linhas").addEventListener("click", function(ev){
-    var b = ev.target.closest("[data-wa],[data-foto]"); if (!b) return;
-    var id = b.getAttribute("data-wa") || b.getAttribute("data-foto");
-    var r = dados.find(function(x){ return String(x.id) === id; }); if (!r) return;
-    if (b.hasAttribute("data-wa")) { abrirConversa(r); marcarEnviado(r); return; }
+    var b = ev.target.closest("[data-wa]"); if (!b) return;
+    var r = dados.find(function(x){ return String(x.id) === b.getAttribute("data-wa"); }); if (!r) return;
     var texto = mensagem(r);
     try { navigator.clipboard.writeText(texto).catch(function(){}); } catch (e) {}
     if (foto && navigator.canShare && navigator.canShare({files:[foto]})) {
