@@ -42,17 +42,17 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
 .conv{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
 .conv.chegou{background:var(--ok-soft);border-color:#B9E2C8}
 .l1{display:flex;align-items:center;gap:10px}
-.num{font-variant-numeric:tabular-nums;color:var(--taupe);font-size:12px;min-width:30px}
+.num{font-variant-numeric:tabular-nums;color:var(--gold-deep);font-weight:500;font-size:15px;min-width:26px}
 .nome{flex:1;font-weight:500;font-size:16px;min-width:0;overflow-wrap:anywhere}
 .ck{padding:10px 14px;font-size:12px;letter-spacing:.06em;background:var(--white);color:var(--ok);border:1.5px solid var(--ok);white-space:nowrap}
 .conv.chegou .ck{background:var(--ok);color:#fff}
-.l2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--taupe)}
-.acomp{display:inline-flex;align-items:center;gap:6px;margin-right:auto}
+.l2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--taupe)}
+.acomp{display:inline-flex;align-items:center;gap:5px;margin-right:auto}
 .acomp button{width:32px;height:32px;padding:0;font-size:18px;line-height:1;letter-spacing:0;background:var(--white);color:var(--ink);border:1px solid var(--line)}
 .acomp b{min-width:16px;text-align:center;color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
-.wa{padding:8px 10px;font-size:11px;letter-spacing:.06em;background:#25D366;color:#fff}
+.wa{padding:8px 10px;font-size:11px;letter-spacing:.04em;background:#25D366;color:#fff}
 .wa.enviado{background:var(--white);color:#128C4A;border:1px solid #9FDDB8}
-.del{padding:7px 10px;font-size:15px;letter-spacing:0;background:var(--white);color:var(--danger);border:1px solid #E8C9C3}
+.del{padding:8px 10px;font-size:11px;letter-spacing:.04em;background:var(--white);color:var(--danger);border:1px solid #E8C9C3}
 .l3{margin-top:6px;font-size:13px;color:var(--taupe);overflow-wrap:anywhere}
 .l3 a{color:var(--gold-deep)}
 .empty{padding:30px;text-align:center;color:var(--taupe)}
@@ -193,14 +193,14 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
   var hora = function(iso){ return new Date(iso).toLocaleTimeString("pt-BR", {hour:"2-digit",minute:"2-digit"}); };
   function avisar(txt){ $("aviso").innerHTML = txt; $("aviso").hidden = !txt; }
 
-  function cartao(r){
+  function cartao(r, pos){
     var ok = !!r.chegou_em, env = enviados[r.id], tel = foneWhats(r.telefone);
     var h = '<div class="conv' + (ok ? " chegou" : "") + '" data-id="' + esc(r.id) + '">' +
-      '<div class="l1"><span class="num">' + num(r) + '</span><span class="nome">' + esc(r.nome) + "</span>" +
-      '<button type="button" class="ck" data-a="ck">' + (ok ? "✓ Chegou " + hora(r.chegou_em) : "Chegou?") + "</button></div>" +
-      '<div class="l2"><span class="acomp">Acomp. <button type="button" data-a="menos" aria-label="Menos um acompanhante">−</button><b>' + esc(r.acompanhantes) + '</b><button type="button" data-a="mais" aria-label="Mais um acompanhante">+</button></span>' +
+      '<div class="l1"><span class="num">' + pos + '.</span><span class="nome">' + esc(r.nome) + "</span>" +
+      '<button type="button" class="ck" data-a="ck">' + (ok ? "✓ " + hora(r.chegou_em) : "Chegou?") + "</button></div>" +
+      '<div class="l2"><span class="acomp">👥 <button type="button" data-a="menos" aria-label="Menos um acompanhante">−</button><b>' + esc(r.acompanhantes) + '</b><button type="button" data-a="mais" aria-label="Mais um acompanhante">+</button></span>' +
       (tel ? '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-a="wa">' + (env ? "✓ WhatsApp" : "📷 WhatsApp") + "</button>" : "") +
-      '<button type="button" class="del" data-a="del" aria-label="Excluir convidado">🗑</button></div>';
+      '<button type="button" class="del" data-a="del" aria-label="Excluir convidado">🗑 Excluir</button></div>';
     var extra = [];
     if (r.telefone) extra.push(tel ? '<a href="https://wa.me/' + tel + '" target="_blank" rel="noopener">' + esc(r.telefone) + "</a>" : esc(r.telefone));
     if (r.recado) extra.push("“" + esc(r.recado) + "”");
@@ -216,7 +216,7 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
       if (!q) return true;
       return semAcento(r.nome).indexOf(q) >= 0 || semAcento(r.email).indexOf(q) >= 0 || (qd && String(r.telefone || "").replace(/\D/g, "").indexOf(qd) >= 0) || (qd && num(r).indexOf(qd) >= 0);
     });
-    $("linhas").innerHTML = lista.map(cartao).join("");
+    $("linhas").innerHTML = lista.map(function(r){ return cartao(r, dados.indexOf(r) + 1); }).join("");
     $("vazio").hidden = lista.length > 0;
     var chegaram = dados.filter(function(r){ return r.chegou_em; });
     $("stInscricoes").textContent = dados.length;
@@ -225,11 +225,11 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
   }
 
   async function carregar(){
-    var res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em,chegou_em").order("nome", {ascending:true});
+    var res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em,chegou_em").order("numero", {ascending:true});
     semCheckin = false;
     if (res.error && /chegou_em/.test(res.error.message || "")) {
       semCheckin = true;
-      res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em").order("nome", {ascending:true});
+      res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em").order("numero", {ascending:true});
     }
     if (res.error) { avisar("Erro ao carregar: " + esc(res.error.message)); return; }
     avisar(semCheckin ? "<b>Falta ativar o check-in no banco.</b> Rode uma vez o arquivo <code>supabase/migrations/20261019_painel_checkin_excluir.sql</code> no SQL Editor do Supabase. Até lá, Chegou / Excluir / Acomp. não salvam." : "");
@@ -248,7 +248,7 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
     }
   }
   async function excluir(r){
-    if (!confirm("Excluir " + r.nome + " (nº " + num(r) + ") da lista?\nIsso não pode ser desfeito.")) return;
+    if (!confirm("Excluir " + r.nome + " da lista?\nIsso não pode ser desfeito.")) return;
     var res = await sb.from(TABLE).delete().eq("id", r.id).select("id");
     if (res.error || !res.data || !res.data.length) { alert("Não foi possível excluir." + (res.error ? "\n" + res.error.message : "\nFalta rodar o SQL de permissões no Supabase.")); return; }
     dados = dados.filter(function(x){ return x.id !== r.id; }); render();
