@@ -35,4 +35,4 @@ Arquivos na raiz do repositório; `CNAME` = `juanbusiness.online`.
 Links finais:
 - Convite: https://juanbusiness.online/
 - Inscrições: https://juanbusiness.online/inscricoes.html
-
+- Painel no dia da festa (`inscricoes.html`, pensado para o celular): busca sem acento, botão **Chegou?** (check-in, grava `chegou_em`), filtros Todos / Faltam chegar / Chegaram, − / + de acompanhantes, 🗑 excluir convidado e 🎲 **Sorteio** só entre quem chegou (quem já foi sorteado não sai de novo, lista guardada no aparelho). Permissões no banco: `supabase/migrations/20261019_painel_checkin_excluir.sql`.

@@ -7,50 +7,71 @@
 <title>Inscrições · Noite de Gratidão</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap">
 <style>
-:root{--ivory:#F8F5EF;--white:#fff;--gold:#C9A24A;--gold-deep:#A8842E;--gold-soft:#E9D9B0;--ink:#2B2620;--taupe:#6F665C;--line:#EDE6D8}
+:root{--ivory:#F8F5EF;--white:#fff;--gold:#C9A24A;--gold-deep:#A8842E;--gold-soft:#E9D9B0;--ink:#2B2620;--taupe:#6F665C;--line:#EDE6D8;--ok:#1F8A4C;--ok-soft:#E7F5EC;--danger:#9B3B2E}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ivory);color:var(--ink);font-family:"Jost","Helvetica Neue",Arial,sans-serif;font-weight:300;font-size:15px;line-height:1.5}
-.wrap{max-width:960px;margin:0 auto;padding:40px 20px 80px}
-h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:34px;margin:0}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:"Jost","Helvetica Neue",Arial,sans-serif;font-weight:300;font-size:15px;line-height:1.45}
+.wrap{max-width:760px;margin:0 auto;padding:20px 12px 80px}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:26px;margin:0;line-height:1.1}
 h1 em{color:var(--gold-deep);font-style:italic;font-weight:500}
-.label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;margin:0 0 6px}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
-.card{background:var(--white);border:1px solid var(--gold-soft);padding:28px;box-shadow:0 18px 44px rgba(43,38,32,.06)}
-.login{max-width:420px;margin:60px auto 0}
+.label{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;margin:0 0 4px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
+.card{background:var(--white);border:1px solid var(--gold-soft);padding:24px;box-shadow:0 18px 44px rgba(43,38,32,.06)}
+.login{max-width:420px;margin:40px auto 0}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
 label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
-input{font:inherit;padding:12px 14px;border:1px solid #E6E0D5;background:#FBF9F5;border-radius:2px;width:100%}
-input:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
-button{font:inherit;font-weight:500;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:13px 26px;border:0;border-radius:2px;background:linear-gradient(180deg,#D9B85F,#B8923C);color:#fff;cursor:pointer}
-button.ghost{background:none;color:var(--taupe);border:1px solid var(--line);padding:9px 16px}
-.err{color:#9B3B2E;font-size:14px;min-height:1.3em;margin:8px 0 0}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--gold-soft);background:var(--white);margin-bottom:24px}
-.stat{padding:20px;text-align:center}
+input,textarea{font:inherit;padding:11px 13px;border:1px solid #E6E0D5;background:#FBF9F5;border-radius:6px;width:100%}
+input:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+button{font:inherit;font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:12px 20px;border:0;border-radius:6px;background:linear-gradient(180deg,#D9B85F,#B8923C);color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.5}
+button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--line);padding:9px 12px}
+.err{color:var(--danger);font-size:14px;min-height:1.3em;margin:8px 0 0}
+.aviso{background:#FFF6E0;border:1px solid var(--gold-soft);color:var(--ink);padding:10px 12px;border-radius:6px;font-size:13px;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--gold-soft);background:var(--white);border-radius:8px;margin-bottom:12px}
+.stat{padding:10px 6px;text-align:center}
 .stat + .stat{border-left:1px solid var(--gold-soft)}
-.stat .n{font-family:"Cormorant Garamond",Georgia,serif;font-size:36px;font-weight:600;line-height:1;margin:4px 0 0;font-variant-numeric:tabular-nums}
-.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-.tools input{max-width:320px}
-.tbl{overflow-x:auto;background:var(--white);border:1px solid var(--gold-soft)}
-table{width:100%;border-collapse:collapse;min-width:780px}
-th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);font-weight:500;background:#FBF9F5}
-td.num{text-align:center;font-variant-numeric:tabular-nums}
-td.when{white-space:nowrap;color:var(--taupe);font-size:13px}
-td.recado{color:var(--taupe);max-width:320px}
-tr:last-child td{border-bottom:0}
-.empty{padding:40px;text-align:center;color:var(--taupe)}
-a{color:var(--gold-deep)}
-.tpl{background:var(--white);border:1px solid var(--gold-soft);margin-bottom:18px}
-.tpl summary{cursor:pointer;padding:14px 18px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
-.tpl .corpo{padding:0 18px 18px}
-.tpl textarea{font:inherit;width:100%;min-height:230px;padding:12px 14px;border:1px solid #E6E0D5;background:#FBF9F5;border-radius:2px;resize:vertical}
+.stat .n{font-family:"Cormorant Garamond",Georgia,serif;font-size:28px;font-weight:600;line-height:1;margin:2px 0 0;font-variant-numeric:tabular-nums}
+.stat .n small{font-size:15px;color:var(--taupe);font-weight:500}
+.barra{position:sticky;top:0;z-index:5;background:var(--ivory);padding:8px 0;margin-bottom:4px}
+.busca{display:flex;gap:8px}
+.busca input{font-size:16px;padding:12px 14px;background:var(--white)}
+.busca .sortear{white-space:nowrap;padding:12px 14px}
+.filtros{display:flex;gap:6px;margin-top:8px;overflow-x:auto}
+.filtros button{background:var(--white);color:var(--taupe);border:1px solid var(--line);padding:7px 12px;font-size:11px;white-space:nowrap}
+.filtros button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lista{display:flex;flex-direction:column;gap:8px}
+.conv{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.conv.chegou{background:var(--ok-soft);border-color:#B9E2C8}
+.l1{display:flex;align-items:center;gap:10px}
+.num{font-variant-numeric:tabular-nums;color:var(--taupe);font-size:12px;min-width:30px}
+.nome{flex:1;font-weight:500;font-size:16px;min-width:0;overflow-wrap:anywhere}
+.ck{padding:10px 14px;font-size:12px;letter-spacing:.06em;background:var(--white);color:var(--ok);border:1.5px solid var(--ok);white-space:nowrap}
+.conv.chegou .ck{background:var(--ok);color:#fff}
+.l2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--taupe)}
+.acomp{display:inline-flex;align-items:center;gap:6px;margin-right:auto}
+.acomp button{width:32px;height:32px;padding:0;font-size:18px;line-height:1;letter-spacing:0;background:var(--white);color:var(--ink);border:1px solid var(--line)}
+.acomp b{min-width:16px;text-align:center;color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.wa{padding:8px 10px;font-size:11px;letter-spacing:.06em;background:#25D366;color:#fff}
+.wa.enviado{background:var(--white);color:#128C4A;border:1px solid #9FDDB8}
+.del{padding:7px 10px;font-size:15px;letter-spacing:0;background:var(--white);color:var(--danger);border:1px solid #E8C9C3}
+.l3{margin-top:6px;font-size:13px;color:var(--taupe);overflow-wrap:anywhere}
+.l3 a{color:var(--gold-deep)}
+.empty{padding:30px;text-align:center;color:var(--taupe)}
+.mais{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.mais .botoes{display:flex;gap:8px;flex-wrap:wrap}
+.tpl{background:var(--white);border:1px solid var(--gold-soft);border-radius:8px}
+.tpl summary{cursor:pointer;padding:12px 14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
+.tpl .corpo{padding:0 14px 14px}
+.tpl textarea{min-height:140px;resize:vertical}
 .tpl .dica{color:var(--taupe);font-size:13px;margin:8px 0 12px}
 .tpl code{background:#F3EDE1;padding:1px 5px;border-radius:2px;font-size:12px}
-.wa{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:8px 12px;font-size:11px;letter-spacing:.14em;background:#25D366;color:#fff;border-radius:2px}
-.wa.enviado{background:#fff;color:#128C4A;border:1px solid #9FDDB8}
-td.acao{white-space:nowrap}
-td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
-@media (max-width:640px){.stats{grid-template-columns:1fr}.stat + .stat{border-left:0;border-top:1px solid var(--gold-soft)}}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(43,38,32,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none}
+.caixa{background:var(--white);border-radius:12px;padding:24px 18px;width:100%;max-width:420px;text-align:center}
+.sorteado{font-family:"Cormorant Garamond",Georgia,serif;font-size:38px;font-weight:600;line-height:1.1;margin:14px 0 4px;min-height:84px;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+.sorteado.final{color:var(--gold-deep)}
+.caixa .info{color:var(--taupe);font-size:13px;margin:0 0 16px}
+.caixa .botoes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.caixa .ja{margin:16px 0 0;font-size:12px;color:var(--taupe);text-align:left}
 </style>
 </head>
 <body>
@@ -58,7 +79,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   <div class="top">
     <div>
       <p class="label">Noite de Gratidão · 19/10 · 18h30</p>
-      <h1>Inscrições pelo <em>link</em></h1>
+      <h1>Convidados</h1>
     </div>
     <button class="ghost" id="sair" hidden type="button">Sair</button>
   </div>
@@ -75,31 +96,53 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   </div>
 
   <div id="painel" hidden>
+    <div class="aviso" id="aviso" hidden></div>
     <div class="stats">
       <div class="stat"><p class="label">Inscrições</p><p class="n" id="stInscricoes">0</p></div>
-      <div class="stat"><p class="label">Pessoas no total</p><p class="n" id="stPessoas">0</p></div>
-      <div class="stat"><p class="label">Última inscrição</p><p class="n" id="stUltima" style="font-size:22px">—</p></div>
+      <div class="stat"><p class="label">Pessoas</p><p class="n" id="stPessoas">0</p></div>
+      <div class="stat"><p class="label">Chegaram</p><p class="n" id="stChegaram">0</p></div>
     </div>
-    <div class="tools">
-      <input id="busca" type="search" placeholder="Buscar por nome, e-mail ou telefone">
-      <button class="ghost" id="atualizar" type="button">Atualizar</button>
-      <button class="ghost" id="csv" type="button">Baixar CSV</button>
-    </div>
-    <details class="tpl" id="tplBox">
-      <summary>Mensagem pelo WhatsApp</summary>
-      <div class="corpo">
-        <textarea id="tplTexto" spellcheck="true"></textarea>
-        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. A foto do convite vai junto: no celular abre o compartilhamento (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar); no computador a foto é baixada e a conversa abre para você anexá-la.</p>
-        <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
+    <div class="barra">
+      <div class="busca">
+        <input id="busca" type="search" placeholder="🔍 Buscar convidado" autocomplete="off">
+        <button class="sortear" id="sortear" type="button">🎲 Sorteio</button>
       </div>
-    </details>
-    <div class="tbl">
-      <table>
-        <thead><tr><th style="text-align:center">Nº</th><th>Nome</th><th>Contato</th><th style="text-align:center">Acomp.</th><th>Recado</th><th>Quando</th><th>Confirmar</th></tr></thead>
-        <tbody id="linhas"></tbody>
-      </table>
-      <div class="empty" id="vazio" hidden>Nenhuma inscrição ainda.</div>
+      <div class="filtros" id="filtros">
+        <button type="button" class="on" data-f="todos">Todos</button>
+        <button type="button" data-f="faltam">Faltam chegar</button>
+        <button type="button" data-f="chegaram">Chegaram</button>
+      </div>
     </div>
+    <div class="lista" id="linhas"></div>
+    <div class="empty" id="vazio" hidden>Nenhum convidado encontrado.</div>
+
+    <div class="mais">
+      <details class="tpl" id="tplBox">
+        <summary>Mensagem pelo WhatsApp</summary>
+        <div class="corpo">
+          <textarea id="tplTexto" spellcheck="true"></textarea>
+          <p class="dica">Campos: <code>{nome}</code>, <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. Fica salvo neste navegador. O botão <b>WhatsApp</b> manda a foto do convite junto: no celular abre o compartilhamento (escolha o WhatsApp e o contato; o texto fica copiado, se não vier é só colar); no computador baixa a foto e abre a conversa.</p>
+          <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
+        </div>
+      </details>
+      <div class="botoes">
+        <button class="ghost" id="atualizar" type="button">Atualizar</button>
+        <button class="ghost" id="csv" type="button">Baixar CSV</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modalSorteio" hidden>
+  <div class="caixa">
+    <p class="label">Sorteio · só quem chegou</p>
+    <div class="sorteado" id="sorteado">🎲</div>
+    <p class="info" id="sorteioInfo"></p>
+    <div class="botoes">
+      <button type="button" id="sortearDeNovo">Sortear</button>
+      <button type="button" class="ghost" id="fecharSorteio">Fechar</button>
+    </div>
+    <div class="ja" id="jaSorteados"></div>
   </div>
 </div>
 
@@ -111,9 +154,12 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   var TABLE = "inscricoes_aniversario_juan";
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var dados = [];
+  var filtro = "todos";
+  var semCheckin = false;
   var TPL_KEY = "noite_gratidao_tpl_whatsapp_hoje2";
   var FOTO_URL = "e-hoje.jpg";
   var ENV_KEY = "noite_gratidao_whatsapp_enviados";
+  var SORT_KEY = "noite_gratidao_sorteados";
   var TPL_PADRAO = "*É HOJEEEEEE!*\n\n" +
     "Estarei te esperando para juntamente comigo viver essa noite mágica 💝";
   var ler = function(k){ try { return localStorage.getItem(k); } catch (e) { return null; } };
@@ -121,11 +167,16 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   // Foto do convite carregada de antemão: o compartilhamento precisa acontecer logo no clique.
   var foto = null;
   fetch(FOTO_URL).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){ if (b) foto = new File([b], "noite-de-gratidao-e-hoje.jpg", {type:"image/jpeg"}); }).catch(function(){});
-  var enviados = {};
+  var enviados = {}, sorteados = [];
   try { enviados = JSON.parse(ler(ENV_KEY) || "{}") || {}; } catch (e) { enviados = {}; }
+  try { sorteados = JSON.parse(ler(SORT_KEY) || "[]") || []; } catch (e) { sorteados = []; }
 
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  var semAcento = function(s){ return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
+  var num = function(r){ return String(r.numero || "").padStart(3, "0"); };
+  var pessoasDe = function(r){ return 1 + (Number(r.acompanhantes) || 0); };
+  var acharPorId = function(id){ return dados.find(function(x){ return String(x.id) === String(id); }); };
   // Telefone brasileiro: só dígitos; acrescenta 55 quando vier só DDD + número.
   function foneWhats(t){
     var d = String(t || "").replace(/\D/g, "").replace(/^0+/, "");
@@ -133,37 +184,74 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
     return d.length >= 12 ? d : "";
   }
   function mensagem(r){
-    var pessoas = 1 + (Number(r.acompanhantes) || 0);
+    var pessoas = pessoasDe(r);
     var completo = String(r.nome || "").trim();
-    var vars = { nome: completo.split(/\s+/)[0] || completo, nome_completo: completo, numero: String(r.numero || "").padStart(3, "0"), pessoas: pessoas + (pessoas > 1 ? " pessoas" : " pessoa") };
+    var vars = { nome: completo.split(/\s+/)[0] || completo, nome_completo: completo, numero: num(r), pessoas: pessoas + (pessoas > 1 ? " pessoas" : " pessoa") };
     return ($("tplTexto").value || TPL_PADRAO).replace(/\{(nome_completo|nome|numero|pessoas)\}/g, function(_, k){ return vars[k]; });
   }
-  function botaoWhats(r){
-    if (!foneWhats(r.telefone)) return '<span style="color:var(--taupe);font-size:13px">sem telefone</span>';
-    var env = enviados[r.id];
-    return '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-wa="' + esc(r.id) + '">' + (env ? "✓ Reenviar" : "📷 WhatsApp") + "</button>" +
-      (env ? "<small>enviado " + fmt(env) + "</small>" : "");
-  }
   var fmt = function(iso){ return new Date(iso).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
+  var hora = function(iso){ return new Date(iso).toLocaleTimeString("pt-BR", {hour:"2-digit",minute:"2-digit"}); };
+  function avisar(txt){ $("aviso").innerHTML = txt; $("aviso").hidden = !txt; }
+
+  function cartao(r){
+    var ok = !!r.chegou_em, env = enviados[r.id], tel = foneWhats(r.telefone);
+    var h = '<div class="conv' + (ok ? " chegou" : "") + '" data-id="' + esc(r.id) + '">' +
+      '<div class="l1"><span class="num">' + num(r) + '</span><span class="nome">' + esc(r.nome) + "</span>" +
+      '<button type="button" class="ck" data-a="ck">' + (ok ? "✓ Chegou " + hora(r.chegou_em) : "Chegou?") + "</button></div>" +
+      '<div class="l2"><span class="acomp">Acomp. <button type="button" data-a="menos" aria-label="Menos um acompanhante">−</button><b>' + esc(r.acompanhantes) + '</b><button type="button" data-a="mais" aria-label="Mais um acompanhante">+</button></span>' +
+      (tel ? '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-a="wa">' + (env ? "✓ WhatsApp" : "📷 WhatsApp") + "</button>" : "") +
+      '<button type="button" class="del" data-a="del" aria-label="Excluir convidado">🗑</button></div>';
+    var extra = [];
+    if (r.telefone) extra.push(tel ? '<a href="https://wa.me/' + tel + '" target="_blank" rel="noopener">' + esc(r.telefone) + "</a>" : esc(r.telefone));
+    if (r.recado) extra.push("“" + esc(r.recado) + "”");
+    if (extra.length) h += '<div class="l3">' + extra.join(" · ") + "</div>";
+    return h + "</div>";
+  }
 
   function render(){
-    var q = $("busca").value.trim().toLowerCase();
-    var lista = dados.filter(function(r){ return !q || (r.nome||"").toLowerCase().indexOf(q) >= 0 || (r.telefone||"").toLowerCase().indexOf(q) >= 0 || (r.email||"").toLowerCase().indexOf(q) >= 0; });
-    $("linhas").innerHTML = lista.map(function(r){
-      var tel = r.telefone ? '<a href="https://wa.me/' + esc(foneWhats(r.telefone) || r.telefone.replace(/\D/g,"")) + '" target="_blank" rel="noopener">' + esc(r.telefone) + '</a>' : "—";
-      if (r.email) tel += '<br><span style="color:var(--taupe);font-size:13px">' + esc(r.email) + '</span>';
-      return '<tr><td class="num">' + String(r.numero || "").padStart(3, "0") + "</td><td>" + esc(r.nome) + "</td><td>" + tel + '</td><td class="num">' + esc(r.acompanhantes) + '</td><td class="recado">' + (esc(r.recado) || "—") + '</td><td class="when">' + fmt(r.criado_em) + '</td><td class="acao">' + botaoWhats(r) + "</td></tr>";
-    }).join("");
+    var q = semAcento($("busca").value.trim()), qd = q.replace(/\D/g, "");
+    var lista = dados.filter(function(r){
+      if (filtro === "faltam" && r.chegou_em) return false;
+      if (filtro === "chegaram" && !r.chegou_em) return false;
+      if (!q) return true;
+      return semAcento(r.nome).indexOf(q) >= 0 || semAcento(r.email).indexOf(q) >= 0 || (qd && String(r.telefone || "").replace(/\D/g, "").indexOf(qd) >= 0) || (qd && num(r).indexOf(qd) >= 0);
+    });
+    $("linhas").innerHTML = lista.map(cartao).join("");
     $("vazio").hidden = lista.length > 0;
+    var chegaram = dados.filter(function(r){ return r.chegou_em; });
     $("stInscricoes").textContent = dados.length;
-    $("stPessoas").textContent = dados.reduce(function(a, r){ return a + 1 + (Number(r.acompanhantes) || 0); }, 0);
-    $("stUltima").textContent = dados.length ? fmt(dados[0].criado_em) : "—";
+    $("stPessoas").textContent = dados.reduce(function(a, r){ return a + pessoasDe(r); }, 0);
+    $("stChegaram").innerHTML = chegaram.length + " <small>/ " + dados.length + "</small>";
   }
 
   async function carregar(){
-    var res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em").order("criado_em", {ascending:false});
-    if (res.error) { $("loginErr").textContent = "Erro ao carregar: " + res.error.message; return; }
+    var res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em,chegou_em").order("nome", {ascending:true});
+    semCheckin = false;
+    if (res.error && /chegou_em/.test(res.error.message || "")) {
+      semCheckin = true;
+      res = await sb.from(TABLE).select("id,numero,nome,email,telefone,acompanhantes,recado,criado_em").order("nome", {ascending:true});
+    }
+    if (res.error) { avisar("Erro ao carregar: " + esc(res.error.message)); return; }
+    avisar(semCheckin ? "<b>Falta ativar o check-in no banco.</b> Rode uma vez o arquivo <code>supabase/migrations/20261019_painel_checkin_excluir.sql</code> no SQL Editor do Supabase. Até lá, Chegou / Excluir / Acomp. não salvam." : "");
     dados = res.data || []; render();
+  }
+
+  // Grava no banco; se falhar, desfaz na tela e mostra o motivo.
+  async function salvar(r, campos){
+    var antes = {};
+    Object.keys(campos).forEach(function(k){ antes[k] = r[k]; r[k] = campos[k]; });
+    render();
+    var res = await sb.from(TABLE).update(campos).eq("id", r.id).select("id");
+    if (res.error || !res.data || !res.data.length) {
+      Object.keys(antes).forEach(function(k){ r[k] = antes[k]; }); render();
+      alert("Não foi possível salvar." + (res.error ? "\n" + res.error.message : "\nFalta rodar o SQL de permissões no Supabase."));
+    }
+  }
+  async function excluir(r){
+    if (!confirm("Excluir " + r.nome + " (nº " + num(r) + ") da lista?\nIsso não pode ser desfeito.")) return;
+    var res = await sb.from(TABLE).delete().eq("id", r.id).select("id");
+    if (res.error || !res.data || !res.data.length) { alert("Não foi possível excluir." + (res.error ? "\n" + res.error.message : "\nFalta rodar o SQL de permissões no Supabase.")); return; }
+    dados = dados.filter(function(x){ return x.id !== r.id; }); render();
   }
 
   function mostrar(logado){
@@ -181,14 +269,18 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   $("sair").addEventListener("click", async function(){ await sb.auth.signOut(); dados = []; mostrar(false); });
   $("atualizar").addEventListener("click", carregar);
   $("busca").addEventListener("input", render);
+  $("filtros").addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-f]"); if (!b) return;
+    filtro = b.getAttribute("data-f");
+    [].forEach.call($("filtros").children, function(x){ x.classList.toggle("on", x === b); });
+    render();
+  });
   $("tplTexto").value = ler(TPL_KEY) || TPL_PADRAO;
   $("tplTexto").addEventListener("input", function(){ gravar(TPL_KEY, $("tplTexto").value); });
   $("tplPadrao").addEventListener("click", function(){ $("tplTexto").value = TPL_PADRAO; gravar(TPL_KEY, TPL_PADRAO); });
   function marcarEnviado(r){ enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render(); }
   function abrirConversa(r){ window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener"); }
-  $("linhas").addEventListener("click", function(ev){
-    var b = ev.target.closest("[data-wa]"); if (!b) return;
-    var r = dados.find(function(x){ return String(x.id) === b.getAttribute("data-wa"); }); if (!r) return;
+  function enviarWhats(r){
     var texto = mensagem(r);
     try { navigator.clipboard.writeText(texto).catch(function(){}); } catch (e) {}
     if (foto && navigator.canShare && navigator.canShare({files:[foto]})) {
@@ -198,11 +290,52 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
     // Computador: baixa a foto e abre a conversa com o texto; é só anexar a imagem.
     var a = document.createElement("a"); a.href = FOTO_URL; a.download = "noite-de-gratidao-e-hoje.jpg"; a.click();
     abrirConversa(r); marcarEnviado(r);
+  }
+  $("linhas").addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-a]"); if (!b) return;
+    var r = acharPorId(b.closest("[data-id]").getAttribute("data-id")); if (!r) return;
+    var a = b.getAttribute("data-a"), n = Number(r.acompanhantes) || 0;
+    if (a === "ck") salvar(r, { chegou_em: r.chegou_em ? null : new Date().toISOString() });
+    else if (a === "menos" && n > 0) salvar(r, { acompanhantes: n - 1 });
+    else if (a === "mais" && n < 10) salvar(r, { acompanhantes: n + 1 });
+    else if (a === "wa") enviarWhats(r);
+    else if (a === "del") excluir(r);
   });
   $("csv").addEventListener("click", function(){
-    var linhas = [["Nº","Nome","E-mail","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.email || "", r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
+    var linhas = [["Nº","Nome","E-mail","WhatsApp","Acompanhantes","Recado","Inscrição","Chegou"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.email || "", r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR"), r.chegou_em ? fmt(r.chegou_em) : ""]; }));
     var csv = "﻿" + linhas.map(function(l){ return l.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(";"); }).join("\n");
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})); a.download = "inscricoes-noite-de-gratidao.csv"; a.click();
+  });
+
+  // Sorteio: só entre quem já chegou; quem foi sorteado não sai de novo (lista guardada neste aparelho).
+  var girando = false;
+  function candidatos(){ return dados.filter(function(r){ return r.chegou_em && sorteados.indexOf(String(r.id)) < 0; }); }
+  function infoSorteio(){
+    var c = candidatos().length;
+    $("sorteioInfo").textContent = c ? c + (c > 1 ? " convidados concorrendo" : " convidado concorrendo") : (dados.some(function(r){ return r.chegou_em; }) ? "Todos que chegaram já foram sorteados." : "Ninguém marcado como “Chegou” ainda.");
+    $("sortearDeNovo").disabled = !c || girando;
+    var ja = sorteados.map(acharPorId).filter(Boolean);
+    $("jaSorteados").innerHTML = ja.length ? "<b>Já sorteados:</b> " + ja.map(function(r){ return esc(r.nome); }).join(", ") + ' · <a href="#" id="zerarSorteio">zerar</a>' : "";
+  }
+  function sortear(){
+    var c = candidatos(); if (!c.length || girando) return;
+    girando = true; $("sorteado").classList.remove("final"); infoSorteio();
+    var ganhador = c[Math.floor(Math.random() * c.length)], passos = 22, i = 0;
+    (function rodar(){
+      $("sorteado").textContent = c[Math.floor(Math.random() * c.length)].nome;
+      if (++i < passos) { setTimeout(rodar, 50 + i * 9); return; }
+      $("sorteado").textContent = "🎉 " + ganhador.nome;
+      $("sorteado").classList.add("final");
+      sorteados.push(String(ganhador.id)); gravar(SORT_KEY, JSON.stringify(sorteados));
+      girando = false; infoSorteio();
+    })();
+  }
+  $("sortear").addEventListener("click", function(){ $("sorteado").textContent = "🎲"; $("sorteado").classList.remove("final"); infoSorteio(); $("modalSorteio").hidden = false; });
+  $("sortearDeNovo").addEventListener("click", sortear);
+  $("fecharSorteio").addEventListener("click", function(){ if (!girando) $("modalSorteio").hidden = true; });
+  $("jaSorteados").addEventListener("click", function(ev){
+    if (ev.target.id !== "zerarSorteio") return; ev.preventDefault();
+    if (confirm("Zerar a lista de sorteados? Todos voltam a concorrer.")) { sorteados = []; gravar(SORT_KEY, "[]"); infoSorteio(); }
   });
 
   sb.auth.getSession().then(function(r){ mostrar(!!(r.data && r.data.session)); });
