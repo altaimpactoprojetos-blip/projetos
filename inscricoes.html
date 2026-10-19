@@ -71,6 +71,13 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
 .sorteado.final{color:var(--gold-deep)}
 .caixa .info{color:var(--taupe);font-size:13px;margin:0 0 16px}
 .caixa .botoes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.caixa.msg{text-align:left;padding:18px 16px}
+.caixa.msg textarea{min-height:170px;resize:vertical;font-size:16px;margin:8px 0 10px}
+.caixa.msg .op{display:flex;align-items:center;gap:8px;font-size:14px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink);margin:0 0 14px}
+.caixa.msg .op input{width:auto;margin:0}
+.caixa.msg .botoes{justify-content:stretch}
+.caixa.msg .botoes button{flex:1}
+.caixa.msg .salvar{display:block;margin:12px auto 0;background:none;border:0;color:var(--gold-deep);font-size:12px;letter-spacing:.04em;text-transform:none;text-decoration:underline;padding:4px}
 .caixa .ja{margin:16px 0 0;font-size:12px;color:var(--taupe);text-align:left}
 </style>
 </head>
@@ -118,10 +125,10 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
 
     <div class="mais">
       <details class="tpl" id="tplBox">
-        <summary>Mensagem pelo WhatsApp</summary>
+        <summary>Mensagem padrão do WhatsApp</summary>
         <div class="corpo">
           <textarea id="tplTexto" spellcheck="true"></textarea>
-          <p class="dica">Campos: <code>{nome}</code>, <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. Fica salvo neste navegador. O botão <b>WhatsApp</b> manda a foto do convite junto: no celular abre o compartilhamento (escolha o WhatsApp e o contato; o texto fica copiado, se não vier é só colar); no computador baixa a foto e abre a conversa.</p>
+          <p class="dica">Campos: <code>{nome}</code>, <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. Fica salvo neste navegador. Este é o texto que já aparece quando você toca em <b>WhatsApp</b> — lá dá para mudar antes de enviar. Com a foto: no celular abre o compartilhamento (escolha o WhatsApp e o contato; o texto fica copiado, se não vier é só colar). Sem a foto: abre direto a conversa da pessoa.</p>
           <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
         </div>
       </details>
@@ -143,6 +150,19 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
       <button type="button" class="ghost" id="fecharSorteio">Fechar</button>
     </div>
     <div class="ja" id="jaSorteados"></div>
+  </div>
+</div>
+
+<div class="modal" id="modalMsg" hidden>
+  <div class="caixa msg">
+    <p class="label" id="msgPara">Mensagem</p>
+    <textarea id="msgTexto" spellcheck="true" aria-label="Mensagem do WhatsApp"></textarea>
+    <label class="op"><input type="checkbox" id="msgFoto" checked> Mandar a foto do convite junto</label>
+    <div class="botoes">
+      <button type="button" class="ghost" id="msgCancelar">Cancelar</button>
+      <button type="button" class="wa" id="msgEnviar">Enviar no WhatsApp</button>
+    </div>
+    <button type="button" class="salvar" id="msgSalvar">Usar este texto para todos os próximos</button>
   </div>
 </div>
 
@@ -279,18 +299,39 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
   $("tplTexto").addEventListener("input", function(){ gravar(TPL_KEY, $("tplTexto").value); });
   $("tplPadrao").addEventListener("click", function(){ $("tplTexto").value = TPL_PADRAO; gravar(TPL_KEY, TPL_PADRAO); });
   function marcarEnviado(r){ enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render(); }
-  function abrirConversa(r){ window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener"); }
-  function enviarWhats(r){
-    var texto = mensagem(r);
+  function abrirConversa(r, texto){ window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(texto), "_blank", "noopener"); }
+  function enviarWhats(r, texto, comFoto){
     try { navigator.clipboard.writeText(texto).catch(function(){}); } catch (e) {}
+    if (!comFoto) { abrirConversa(r, texto); marcarEnviado(r); return; }
     if (foto && navigator.canShare && navigator.canShare({files:[foto]})) {
       navigator.share({files:[foto], text:texto}).then(function(){ marcarEnviado(r); }).catch(function(){});
       return;
     }
     // Computador: baixa a foto e abre a conversa com o texto; é só anexar a imagem.
     var a = document.createElement("a"); a.href = FOTO_URL; a.download = "noite-de-gratidao-e-hoje.jpg"; a.click();
-    abrirConversa(r); marcarEnviado(r);
+    abrirConversa(r, texto); marcarEnviado(r);
   }
+  // Caixa para escrever/ajustar a mensagem antes de enviar.
+  var msgAtual = null;
+  function abrirMensagem(r){
+    msgAtual = r;
+    $("msgPara").textContent = "Mensagem para " + (String(r.nome || "").trim().split(/\s+/)[0] || "convidado");
+    $("msgTexto").value = mensagem(r);
+    $("msgSalvar").textContent = "Usar este texto para todos os próximos";
+    $("modalMsg").hidden = false;
+  }
+  $("msgCancelar").addEventListener("click", function(){ $("modalMsg").hidden = true; msgAtual = null; });
+  $("msgEnviar").addEventListener("click", function(){
+    var texto = $("msgTexto").value.trim();
+    if (!msgAtual) return;
+    if (!texto) { $("msgTexto").focus(); return; }
+    var r = msgAtual; $("modalMsg").hidden = true; msgAtual = null;
+    enviarWhats(r, texto, $("msgFoto").checked);
+  });
+  $("msgSalvar").addEventListener("click", function(){
+    $("tplTexto").value = $("msgTexto").value; gravar(TPL_KEY, $("tplTexto").value);
+    $("msgSalvar").textContent = "✓ Salvo como padrão";
+  });
   $("linhas").addEventListener("click", function(ev){
     var b = ev.target.closest("[data-a]"); if (!b) return;
     var r = acharPorId(b.closest("[data-id]").getAttribute("data-id")); if (!r) return;
@@ -298,7 +339,7 @@ button.ghost{background:var(--white);color:var(--taupe);border:1px solid var(--l
     if (a === "ck") salvar(r, { chegou_em: r.chegou_em ? null : new Date().toISOString() });
     else if (a === "menos" && n > 0) salvar(r, { acompanhantes: n - 1 });
     else if (a === "mais" && n < 10) salvar(r, { acompanhantes: n + 1 });
-    else if (a === "wa") enviarWhats(r);
+    else if (a === "wa") abrirMensagem(r);
     else if (a === "del") excluir(r);
   });
   $("csv").addEventListener("click", function(){
