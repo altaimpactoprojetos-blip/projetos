@@ -48,6 +48,7 @@ a{color:var(--gold-deep)}
 .tpl code{background:#F3EDE1;padding:1px 5px;border-radius:2px;font-size:12px}
 .wa{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:8px 12px;font-size:11px;letter-spacing:.14em;background:#25D366;color:#fff;border-radius:2px}
 .wa.enviado{background:#fff;color:#128C4A;border:1px solid #9FDDB8}
+.wa.foto{background:#fff;color:#128C4A;border:1px solid #9FDDB8;margin-left:6px}
 td.acao{white-space:nowrap}
 td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
 @media (max-width:640px){.stats{grid-template-columns:1fr}.stat + .stat{border-left:0;border-top:1px solid var(--gold-soft)}}
@@ -86,10 +87,10 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
       <button class="ghost" id="csv" type="button">Baixar CSV</button>
     </div>
     <details class="tpl" id="tplBox">
-      <summary>Mensagem de confirmação pelo WhatsApp</summary>
+      <summary>Mensagem pelo WhatsApp</summary>
       <div class="corpo">
         <textarea id="tplTexto" spellcheck="true"></textarea>
-        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar.</p>
+        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. O link do fim mostra a foto do convite na conversa. No celular, <b>Com foto</b> envia a imagem do convite junto (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar).</p>
         <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
       </div>
     </details>
@@ -111,16 +112,17 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   var TABLE = "inscricoes_aniversario_juan";
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var dados = [];
-  var TPL_KEY = "noite_gratidao_tpl_whatsapp_1830";
+  var TPL_KEY = "noite_gratidao_tpl_whatsapp_hoje";
+  var FOTO_URL = "e-hoje.jpg";
   var ENV_KEY = "noite_gratidao_whatsapp_enviados";
-  var TPL_PADRAO = "Olá, {nome}! Tudo bem? 😊\n\n" +
-    "Passando para confirmar sua presença na *Noite de Gratidão* do Juan:\n\n" +
-    "📅 19 de outubro · 18h30\n📍 Monte Rey Buffet\n👗 Dress code: tons claros\n\n" +
-    "Sua inscrição é a nº {numero}, para {pessoas}.\n\n" +
-    "Você vai? Responda por favor:\n✅ *SIM* — estarei lá\n❌ *NÃO* — não poderei ir\n\n" +
-    "Obrigado! 🙏";
+  var TPL_PADRAO = "*É HOJEEEEEE!*\n\n" +
+    "Estarei te esperando para juntamente comigo viver essa noite mágica 💝\n\n" +
+    "https://juanbusiness.online/hoje.html";
   var ler = function(k){ try { return localStorage.getItem(k); } catch (e) { return null; } };
   var gravar = function(k, v){ try { localStorage.setItem(k, v); } catch (e) {} };
+  // Foto do convite carregada de antemão: o compartilhamento precisa acontecer logo no clique.
+  var foto = null;
+  fetch(FOTO_URL).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){ if (b) foto = new File([b], "noite-de-gratidao-e-hoje.jpg", {type:"image/jpeg"}); }).catch(function(){});
   var enviados = {};
   try { enviados = JSON.parse(ler(ENV_KEY) || "{}") || {}; } catch (e) { enviados = {}; }
 
@@ -142,6 +144,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
     if (!foneWhats(r.telefone)) return '<span style="color:var(--taupe);font-size:13px">sem telefone</span>';
     var env = enviados[r.id];
     return '<button type="button" class="wa' + (env ? " enviado" : "") + '" data-wa="' + esc(r.id) + '">' + (env ? "✓ Reenviar" : "WhatsApp") + "</button>" +
+      '<button type="button" class="wa foto" data-foto="' + esc(r.id) + '">📷 Com foto</button>' +
       (env ? "<small>enviado " + fmt(env) + "</small>" : "");
   }
   var fmt = function(iso){ return new Date(iso).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
@@ -184,11 +187,22 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   $("tplTexto").value = ler(TPL_KEY) || TPL_PADRAO;
   $("tplTexto").addEventListener("input", function(){ gravar(TPL_KEY, $("tplTexto").value); });
   $("tplPadrao").addEventListener("click", function(){ $("tplTexto").value = TPL_PADRAO; gravar(TPL_KEY, TPL_PADRAO); });
+  function marcarEnviado(r){ enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render(); }
+  function abrirConversa(r){ window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener"); }
   $("linhas").addEventListener("click", function(ev){
-    var b = ev.target.closest("[data-wa]"); if (!b) return;
-    var r = dados.find(function(x){ return String(x.id) === b.getAttribute("data-wa"); }); if (!r) return;
-    window.open("https://wa.me/" + foneWhats(r.telefone) + "?text=" + encodeURIComponent(mensagem(r)), "_blank", "noopener");
-    enviados[r.id] = new Date().toISOString(); gravar(ENV_KEY, JSON.stringify(enviados)); render();
+    var b = ev.target.closest("[data-wa],[data-foto]"); if (!b) return;
+    var id = b.getAttribute("data-wa") || b.getAttribute("data-foto");
+    var r = dados.find(function(x){ return String(x.id) === id; }); if (!r) return;
+    if (b.hasAttribute("data-wa")) { abrirConversa(r); marcarEnviado(r); return; }
+    var texto = mensagem(r);
+    try { navigator.clipboard.writeText(texto).catch(function(){}); } catch (e) {}
+    if (foto && navigator.canShare && navigator.canShare({files:[foto]})) {
+      navigator.share({files:[foto], text:texto}).then(function(){ marcarEnviado(r); }).catch(function(){});
+      return;
+    }
+    // Computador: baixa a foto e abre a conversa com o texto; é só anexar a imagem.
+    var a = document.createElement("a"); a.href = FOTO_URL; a.download = "noite-de-gratidao-e-hoje.jpg"; a.click();
+    abrirConversa(r); marcarEnviado(r);
   });
   $("csv").addEventListener("click", function(){
     var linhas = [["Nº","Nome","E-mail","WhatsApp","Acompanhantes","Recado","Quando"]].concat(dados.map(function(r){ return [r.numero, r.nome, r.email || "", r.telefone || "", r.acompanhantes, r.recado || "", new Date(r.criado_em).toLocaleString("pt-BR")]; }));
