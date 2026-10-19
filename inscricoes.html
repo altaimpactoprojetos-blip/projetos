@@ -90,7 +90,7 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
       <summary>Mensagem pelo WhatsApp</summary>
       <div class="corpo">
         <textarea id="tplTexto" spellcheck="true"></textarea>
-        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. O link do fim mostra a foto do convite na conversa. No celular, <b>Com foto</b> envia a imagem do convite junto (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar).</p>
+        <p class="dica">Campos trocados automaticamente: <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{numero}</code>, <code>{pessoas}</code>. O texto fica salvo neste navegador. Clique em <b>WhatsApp</b> na linha do convidado para abrir a conversa com a mensagem pronta — é só apertar enviar. No celular, <b>Com foto</b> envia a imagem do convite junto (escolha o WhatsApp e o contato; se o texto não vier junto, ele já está copiado — é só colar).</p>
         <button class="ghost" id="tplPadrao" type="button">Voltar ao texto padrão</button>
       </div>
     </details>
@@ -112,12 +112,11 @@ td.acao small{display:block;color:var(--taupe);font-size:12px;margin-top:4px}
   var TABLE = "inscricoes_aniversario_juan";
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var dados = [];
-  var TPL_KEY = "noite_gratidao_tpl_whatsapp_hoje";
+  var TPL_KEY = "noite_gratidao_tpl_whatsapp_hoje2";
   var FOTO_URL = "e-hoje.jpg";
   var ENV_KEY = "noite_gratidao_whatsapp_enviados";
   var TPL_PADRAO = "*É HOJEEEEEE!*\n\n" +
-    "Estarei te esperando para juntamente comigo viver essa noite mágica 💝\n\n" +
-    "https://juanbusiness.online/hoje.html";
+    "Estarei te esperando para juntamente comigo viver essa noite mágica 💝";
   var ler = function(k){ try { return localStorage.getItem(k); } catch (e) { return null; } };
   var gravar = function(k, v){ try { localStorage.setItem(k, v); } catch (e) {} };
   // Foto do convite carregada de antemão: o compartilhamento precisa acontecer logo no clique.
