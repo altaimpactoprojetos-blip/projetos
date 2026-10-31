@@ -1,13 +1,14 @@
 # Noite de Gratidão — convite e inscrições (Juan, 19/10 às 18h30)
 
 ## Arquivos
-- `index.html` — convite com envelope, informações e formulário de inscrição. Fotos embutidas.
+- `index.html` — página principal "Em breve" (foto do Juan, conteúdos, eventos, sobre, contagem para o lançamento em 01/12/2026). Foto em `juan.jpg`.
+- `convite.html` — convite da Noite de Gratidão (19/10), com envelope e formulário de inscrição. Fotos embutidas.
 - `inscricoes.html` — painel restrito para ver quem se inscreveu (login Supabase Auth, usuário `inscricoes@juanbusiness.online`), busca e download em CSV.
   Botão **WhatsApp** em cada inscrição: abre a conversa (wa.me) com a mensagem de confirmação de presença pronta (SIM/NÃO), um convidado por vez. O texto é editável no painel (campos `{nome}`, `{nome_completo}`, `{numero}`, `{pessoas}`) e fica salvo no navegador, assim como a marcação de quem já recebeu.
   Mensagem atual: "É HOJEEEEEE!" (sem link). O botão **WhatsApp** manda a foto do convite (`e-hoje.jpg`) junto: no celular abre o compartilhamento (escolher WhatsApp e o contato; o texto também fica copiado); no computador baixa a foto e abre a conversa para anexar.
 
 ## Estrutura do repositório
-- `index.html` / `inscricoes.html` — site.
+- `index.html` / `convite.html` / `inscricoes.html` — site.
 - `.github/workflows/pages.yml` — publicação automática no GitHub Pages.
 - `supabase/migrations/*.sql` — SQL do banco (tabela, permissões, RPCs, gatilho).
 - `supabase/functions/*` — Edge Functions (e-mail ao convidado e imagem do QR).
