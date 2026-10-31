@@ -1,7 +1,7 @@
 # Noite de Gratidão — convite e inscrições (Juan, 19/10 às 18h30)
 
 ## Arquivos
-- `index.html` — página principal "Em breve" (foto do Juan, conteúdos, eventos, sobre, contagem para o lançamento em 01/12/2026). Foto em `juan.jpg`.
+- `index.html` — página única "Em breve" (foto do Juan + "Conteúdos ✦ Eventos"). Foto em `juan.jpg`.
 - `convite.html` — convite da Noite de Gratidão (19/10), com envelope e formulário de inscrição. Fotos embutidas.
 - `inscricoes.html` — painel restrito para ver quem se inscreveu (login Supabase Auth, usuário `inscricoes@juanbusiness.online`), busca e download em CSV.
   Botão **WhatsApp** em cada inscrição: abre a conversa (wa.me) com a mensagem de confirmação de presença pronta (SIM/NÃO), um convidado por vez. O texto é editável no painel (campos `{nome}`, `{nome_completo}`, `{numero}`, `{pessoas}`) e fica salvo no navegador, assim como a marcação de quem já recebeu.

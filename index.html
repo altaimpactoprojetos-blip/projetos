@@ -4,335 +4,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Juan · Em breve</title>
-<meta name="description" content="Juan · Algo novo está chegando. Conteúdos, eventos e encontros para quem quer crescer com propósito.">
+<meta name="description" content="Juan · Em breve: conteúdos e eventos.">
 <meta property="og:title" content="Juan · Em breve">
-<meta property="og:description" content="Conteúdos, eventos e encontros para quem quer crescer com propósito. Fique por perto.">
+<meta property="og:description" content="Conteúdos e eventos. Em breve.">
 <meta property="og:image" content="https://juanbusiness.online/juan.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#14110D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400&display=swap">
 <style>
 :root{
   --bg:#14110D;
-  --bg-2:#1C1813;
-  --card:#211C16;
   --gold:#C9A24A;
   --gold-soft:#E9D9B0;
   --text:#F3EEE6;
   --muted:#A99E8F;
-  --line:rgba(201,162,74,.28);
+  --line:rgba(201,162,74,.3);
   --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
   --body:"Jost","Helvetica Neue",Arial,sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;display:block}
-a{color:inherit}
-.wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
-
-/* ---------- topo ---------- */
-.nav{position:fixed;inset:0 0 auto;z-index:20;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-.nav.solid{background:rgba(20,17,13,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.brand{font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:.04em;text-decoration:none}
-.brand span{color:var(--gold)}
-.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
-.nav ul a{text-decoration:none;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:color .2s}
-.nav ul a:hover{color:var(--gold-soft)}
-
-/* ---------- hero ---------- */
-.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:110px 0 70px;
-  background:
-    radial-gradient(60% 55% at 72% 45%,rgba(201,162,74,.20),transparent 70%),
-    radial-gradient(40% 40% at 10% 90%,rgba(201,162,74,.08),transparent 70%),
-    linear-gradient(180deg,#14110D 0%,#1A1611 100%)}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:72px 72px;-webkit-mask-image:radial-gradient(70% 60% at 70% 45%,#000,transparent 75%);mask-image:radial-gradient(70% 60% at 70% 45%,#000,transparent 75%)}
-.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
-.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
-h1{font-family:var(--display);font-weight:500;font-size:clamp(56px,9vw,112px);line-height:.95;margin:18px 0 22px}
-h1 em{display:block;font-style:italic;color:var(--gold-soft)}
-.lead{color:var(--muted);font-size:19px;max-width:30em;margin:0 0 32px}
-.btns{display:flex;flex-wrap:wrap;gap:14px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 28px;border-radius:999px;font:500 13px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:1px solid var(--gold);transition:background .2s,color .2s,transform .2s}
-.btn.gold{background:var(--gold);color:#17130E}
-.btn.gold:hover{background:var(--gold-soft)}
-.btn.ghost{background:transparent;color:var(--gold-soft)}
-.btn.ghost:hover{background:rgba(201,162,74,.12)}
-.btn:active{transform:scale(.98)}
-
-.count{display:flex;gap:12px;margin-top:38px}
-.count div{min-width:74px;padding:12px 10px;border:1px solid var(--line);border-radius:14px;text-align:center;background:rgba(255,255,255,.02)}
-.count b{display:block;font-family:var(--display);font-size:32px;font-weight:500;line-height:1;color:var(--gold-soft)}
-.count small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-
-.portrait{position:relative;justify-self:center;width:min(440px,100%)}
-.arch{position:relative;aspect-ratio:4/5;border-radius:999px 999px 28px 28px;overflow:hidden;border:1px solid var(--line);
-  background:linear-gradient(180deg,#2A231A,#17130E);box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 10px rgba(201,162,74,.05)}
-.arch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:sepia(.18) saturate(.95) brightness(.9) contrast(1.05)}
-.arch::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,13,0) 55%,rgba(20,17,13,.75) 100%)}
-.ring{position:absolute;inset:-22px -22px auto;aspect-ratio:4/5;border:1px solid var(--line);border-radius:999px 999px 40px 40px;pointer-events:none}
-.badge{position:absolute;left:-18px;bottom:34px;z-index:2;padding:14px 18px;border-radius:16px;background:rgba(28,24,19,.92);border:1px solid var(--line);backdrop-filter:blur(6px)}
-.badge b{display:block;font-family:var(--display);font-size:22px;font-weight:600;color:var(--gold-soft);line-height:1.1}
-.badge small{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:8px;animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,162,74,.6)}70%{box-shadow:0 0 0 10px rgba(201,162,74,0)}100%{box-shadow:0 0 0 0 rgba(201,162,74,0)}}
-
-/* ---------- faixa ---------- */
-.marquee{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;white-space:nowrap}
-.marquee div{display:inline-block;padding:16px 0;animation:slide 28s linear infinite;font-family:var(--display);font-size:22px;font-style:italic;color:var(--gold-soft)}
-.marquee span{margin:0 26px;color:var(--gold);font-style:normal}
-@keyframes slide{to{transform:translateX(-50%)}}
-
-/* ---------- seções ---------- */
-section{padding:96px 0}
-.head{max-width:620px;margin-bottom:48px}
-h2{font-family:var(--display);font-weight:500;font-size:clamp(38px,5.5vw,58px);line-height:1.05;margin:14px 0 14px}
-h2 em{color:var(--gold-soft)}
-.head p{color:var(--muted);margin:0}
-
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{position:relative;padding:30px 26px 28px;border-radius:22px;background:var(--card);border:1px solid var(--line);overflow:hidden;transition:transform .25s,border-color .25s}
-.card:hover{transform:translateY(-4px);border-color:rgba(201,162,74,.55)}
-.card .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(201,162,74,.12);color:var(--gold);margin-bottom:22px}
-.card .ico svg{width:24px;height:24px}
-.card h3{font-family:var(--display);font-size:28px;font-weight:600;margin:0 0 8px;line-height:1.1}
-.card p{color:var(--muted);margin:0 0 20px;font-size:16px}
-.tag{display:inline-block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--gold)}
-
-.events{background:var(--bg-2);border-block:1px solid var(--line)}
-.list{display:grid;gap:16px}
-.ev{display:grid;grid-template-columns:110px 1fr auto;gap:24px;align-items:center;padding:24px 26px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
-.ev .date{text-align:center;border-right:1px solid var(--line);padding-right:20px}
-.ev .date b{display:block;font-family:var(--display);font-size:38px;font-weight:500;line-height:1;color:var(--gold-soft)}
-.ev .date small{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.ev h3{font-family:var(--display);font-size:26px;font-weight:600;margin:0 0 4px;line-height:1.15}
-.ev p{margin:0;color:var(--muted);font-size:15px}
-.ev.past{opacity:.7}
-.ev.past .tag{color:var(--muted)}
-
-.about .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:center}
-.about figure{margin:0;border-radius:24px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1/1}
-.about figure img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(.25)}
-.quote{font-family:var(--display);font-size:clamp(26px,3.4vw,36px);font-style:italic;line-height:1.3;color:var(--gold-soft);margin:0 0 22px}
-.about p{color:var(--muted)}
-.pillars{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-
-.cta{text-align:center;background:
-  radial-gradient(50% 80% at 50% 0%,rgba(201,162,74,.18),transparent 70%)}
-.cta h2{margin-inline:auto;max-width:14em}
-.cta p{color:var(--muted);max-width:34em;margin:0 auto 30px}
-.cta .btns{justify-content:center}
-
-footer{border-top:1px solid var(--line);padding:30px 0 40px;color:var(--muted);font-size:14px}
-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
-footer a{color:var(--gold-soft);text-decoration:none}
-
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
-.reveal.in{opacity:1;transform:none}
-
-@media (max-width:860px){
-  .nav ul{display:none}
-  .hero{padding-top:92px}
-  .hero .wrap{grid-template-columns:1fr;gap:40px;text-align:center}
-  .hero .copy{order:2}
-  .eyebrow{justify-content:center}
-  .lead{margin-inline:auto}
-  .btns,.count{justify-content:center}
-  .portrait{width:min(320px,82%)}
-  .badge{left:50%;transform:translateX(-50%);bottom:-22px;white-space:nowrap}
-  .grid{grid-template-columns:1fr}
-  .ev{grid-template-columns:78px 1fr;gap:16px;padding:20px}
-  .ev .date{padding-right:14px}
-  .ev .date b{font-size:30px}
-  .ev .tag{grid-column:2;justify-self:start}
-  .about .wrap{grid-template-columns:1fr;gap:32px}
-  .about figure{max-width:320px}
-  section{padding:72px 0}
-}
-@media (max-width:380px){.count div{min-width:62px}.count b{font-size:26px}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+html,body{margin:0;height:100%}
+body{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:32px 20px;
+  background:radial-gradient(55% 50% at 50% 38%,rgba(201,162,74,.18),transparent 70%),var(--bg);
+  color:var(--text);font-family:var(--body);font-weight:300;text-align:center;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+main{display:flex;flex-direction:column;align-items:center;gap:26px;animation:in 1.2s ease both}
+.arch{width:min(260px,62vw);aspect-ratio:4/5;border-radius:999px 999px 24px 24px;overflow:hidden;border:1px solid var(--line);
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.9),0 0 0 10px rgba(201,162,74,.05)}
+.arch img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;filter:sepia(.18) saturate(.95) brightness(.9) contrast(1.05)}
+.name{font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin:0}
+h1{font-family:var(--display);font-weight:500;font-style:italic;font-size:clamp(54px,12vw,96px);line-height:1;margin:0;color:var(--gold-soft)}
+.items{display:flex;align-items:center;gap:16px;margin:0;font-size:14px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.items span{color:var(--gold)}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){main{animation:none}}
 </style>
 </head>
 <body>
-
-<nav class="nav" id="nav">
-  <div class="wrap">
-    <a class="brand" href="#topo">Juan<span>.</span></a>
-    <ul>
-      <li><a href="#conteudos">Conteúdos</a></li>
-      <li><a href="#eventos">Eventos</a></li>
-      <li><a href="#sobre">Sobre</a></li>
-    </ul>
-  </div>
-</nav>
-
-<header class="hero" id="topo">
-  <div class="wrap">
-    <div class="copy">
-      <span class="eyebrow">Algo novo está chegando</span>
-      <h1>Em breve<em>novidades.</em></h1>
-      <p class="lead">Conteúdos, eventos e encontros para quem quer crescer com propósito, viver com gratidão e construir algo que faça sentido.</p>
-      <div class="btns">
-        <a class="btn gold" href="#conteudos">Ver o que vem aí</a>
-        <a class="btn ghost" href="#" id="share">Compartilhar</a>
-      </div>
-      <div class="count" id="count" aria-label="Contagem para o lançamento">
-        <div><b id="d">--</b><small>dias</small></div>
-        <div><b id="h">--</b><small>horas</small></div>
-        <div><b id="m">--</b><small>min</small></div>
-        <div><b id="s">--</b><small>seg</small></div>
-      </div>
-    </div>
-    <div class="portrait">
-      <div class="ring"></div>
-      <div class="arch"><img src="juan.jpg" alt="Juan" width="900" height="837"></div>
-      <div class="badge"><small><span class="dot"></span>Lançamento</small><b>Dezembro · 2026</b></div>
-    </div>
-  </div>
-</header>
-
-<div class="marquee" aria-hidden="true">
-  <div>
-    Conteúdos <span>✦</span> Eventos <span>✦</span> Encontros <span>✦</span> Propósito <span>✦</span> Gratidão <span>✦</span> Negócios <span>✦</span>
-    Conteúdos <span>✦</span> Eventos <span>✦</span> Encontros <span>✦</span> Propósito <span>✦</span> Gratidão <span>✦</span> Negócios <span>✦</span>
-  </div>
-</div>
-
-<section id="conteudos">
-  <div class="wrap">
-    <div class="head reveal">
-      <span class="eyebrow">Conteúdos</span>
-      <h2>O que você vai <em>encontrar aqui</em></h2>
-      <p>Um espaço para aprender, se inspirar e acompanhar de perto cada passo dessa nova fase.</p>
-    </div>
-    <div class="grid">
-      <article class="card reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg></div>
-        <h3>Vídeos</h3>
-        <p>Conversas diretas sobre mentalidade, rotina, fé e negócios. Sem enrolação, com o que funciona na prática.</p>
-        <span class="tag">Em breve</span>
-      </article>
-      <article class="card reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a5 5 0 0 1 5 5v9H9a5 5 0 0 1-5-5z"/><path d="M8 10h8M8 14h5"/></svg></div>
-        <h3>Reflexões</h3>
-        <p>Textos curtos e frases para começar o dia com foco, gratidão e clareza sobre o que realmente importa.</p>
-        <span class="tag">Em breve</span>
-      </article>
-      <article class="card reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="4"/><path d="M4 8h3l2-3h6l2 3h3v11H4z"/></svg></div>
-        <h3>Bastidores</h3>
-        <p>O dia a dia por trás dos projetos: erros, acertos, aprendizados e as pessoas que fazem tudo acontecer.</p>
-        <span class="tag">Em breve</span>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="events" id="eventos">
-  <div class="wrap">
-    <div class="head reveal">
-      <span class="eyebrow">Eventos</span>
-      <h2>Encontros que <em>marcam</em></h2>
-      <p>Momentos presenciais para conectar pessoas, compartilhar experiências e celebrar juntos. As datas serão anunciadas aqui primeiro.</p>
-    </div>
-    <div class="list">
-      <div class="ev reveal">
-        <div class="date"><b>Dez</b><small>2026</small></div>
-        <div><h3>Lançamento oficial</h3><p>A estreia do projeto, com conteúdo novo e uma surpresa para quem estiver por perto.</p></div>
-        <span class="tag">Em breve</span>
-      </div>
-      <div class="ev reveal">
-        <div class="date"><b>2027</b><small>1º semestre</small></div>
-        <div><h3>Encontro de Propósito</h3><p>Uma noite de conversa, networking e inspiração para quem quer crescer em todas as áreas da vida.</p></div>
-        <span class="tag">Em breve</span>
-      </div>
-      <div class="ev past reveal">
-        <div class="date"><b>19</b><small>Out · 2026</small></div>
-        <div><h3>Noite de Gratidão</h3><p>Uma noite de celebração e gratidão a Deus no Monte Rey Buffet. Obrigado a todos que estiveram presentes!</p></div>
-        <span class="tag">Realizado</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="about" id="sobre">
-  <div class="wrap">
-    <figure class="reveal"><img src="juan.jpg" alt="Retrato de Juan" loading="lazy" width="900" height="837"></figure>
-    <div class="reveal">
-      <span class="eyebrow">Sobre</span>
-      <h2>Prazer, <em>Juan</em></h2>
-      <p class="quote">“Gratidão é o começo de tudo. O resto a gente constrói, um passo de cada vez.”</p>
-      <p>Jovem, empreendedor e movido por propósito. Depois de celebrar mais um ano de vida ao lado de quem caminhou junto, chegou a hora de abrir um novo capítulo: compartilhar o que aprendeu e criar momentos que aproximem pessoas.</p>
-      <div class="pillars"><span class="tag">Fé</span><span class="tag">Família</span><span class="tag">Negócios</span><span class="tag">Gratidão</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <div class="wrap reveal">
-    <span class="eyebrow">Fique por perto</span>
-    <h2>O próximo capítulo <em>começa em breve</em></h2>
-    <p>Salve este site e compartilhe com quem também precisa ver o que vem por aí. As novidades vão aparecer aqui primeiro.</p>
-    <div class="btns">
-      <a class="btn gold" id="wa" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
-      <a class="btn ghost" href="#topo">Voltar ao topo</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <span>© <span id="year">2026</span> Juan · Todos os direitos reservados</span>
-    <a href="https://juanbusiness.online">juanbusiness.online</a>
-  </div>
-</footer>
-
-<script>
-(function(){
-  var nav=document.getElementById('nav');
-  function onScroll(){nav.classList.toggle('solid',window.scrollY>30)}
-  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
-
-  // contagem regressiva para o lançamento
-  var alvo=new Date('2026-12-01T19:00:00-03:00').getTime();
-  var el={d:document.getElementById('d'),h:document.getElementById('h'),m:document.getElementById('m'),s:document.getElementById('s')};
-  function pad(n){return n<10?'0'+n:''+n}
-  function tick(){
-    var t=Math.max(0,alvo-Date.now());
-    el.d.textContent=Math.floor(t/864e5);
-    el.h.textContent=pad(Math.floor(t/36e5)%24);
-    el.m.textContent=pad(Math.floor(t/6e4)%60);
-    el.s.textContent=pad(Math.floor(t/1e3)%60);
-  }
-  tick();setInterval(tick,1000);
-
-  // compartilhar
-  var url='https://juanbusiness.online';
-  var msg='Algo novo está chegando! Conteúdos e eventos do Juan: '+url;
-  document.getElementById('wa').href='https://wa.me/?text='+encodeURIComponent(msg);
-  document.getElementById('share').addEventListener('click',function(e){
-    e.preventDefault();
-    if(navigator.share){navigator.share({title:'Juan · Em breve',text:'Algo novo está chegando!',url:url}).catch(function(){})}
-    else{window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
-  });
-
-  document.getElementById('year').textContent=new Date().getFullYear();
-
-  // animação ao rolar
-  var items=document.querySelectorAll('.reveal');
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});
-    items.forEach(function(i){io.observe(i)});
-  }else{items.forEach(function(i){i.classList.add('in')})}
-})();
-</script>
+<main>
+  <div class="arch"><img src="juan.jpg" alt="Juan" width="900" height="837"></div>
+  <p class="name">Juan</p>
+  <h1>Em breve</h1>
+  <p class="items">Conteúdos <span>✦</span> Eventos</p>
+</main>
 </body>
 </html>
