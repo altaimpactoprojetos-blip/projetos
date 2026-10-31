@@ -4,50 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Juan · Em breve</title>
-<meta name="description" content="Juan · Em breve: conteúdos e eventos.">
+<meta name="description" content="Em breve: conteúdos e eventos.">
 <meta property="og:title" content="Juan · Em breve">
-<meta property="og:description" content="Conteúdos e eventos. Em breve.">
+<meta property="og:description" content="Conteúdos e eventos.">
 <meta property="og:image" content="https://juanbusiness.online/juan.jpg">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#14110D">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400&display=swap">
+<meta name="theme-color" content="#ECECEC">
 <style>
-:root{
-  --bg:#14110D;
-  --gold:#C9A24A;
-  --gold-soft:#E9D9B0;
-  --text:#F3EEE6;
-  --muted:#A99E8F;
-  --line:rgba(201,162,74,.3);
-  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
-  --body:"Jost","Helvetica Neue",Arial,sans-serif;
-  color-scheme:dark;
-}
-*{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:32px 20px;
-  background:radial-gradient(55% 50% at 50% 38%,rgba(201,162,74,.18),transparent 70%),var(--bg);
-  color:var(--text);font-family:var(--body);font-weight:300;text-align:center;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-main{display:flex;flex-direction:column;align-items:center;gap:26px;animation:in 1.2s ease both}
-.arch{width:min(260px,62vw);aspect-ratio:4/5;border-radius:999px 999px 24px 24px;overflow:hidden;border:1px solid var(--line);
-  box-shadow:0 30px 80px -30px rgba(0,0,0,.9),0 0 0 10px rgba(201,162,74,.05)}
-.arch img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;filter:sepia(.18) saturate(.95) brightness(.9) contrast(1.05)}
-.name{font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin:0}
-h1{font-family:var(--display);font-weight:500;font-style:italic;font-size:clamp(54px,12vw,96px);line-height:1;margin:0;color:var(--gold-soft)}
-.items{display:flex;align-items:center;gap:16px;margin:0;font-size:14px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
-.items span{color:var(--gold)}
-@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){main{animation:none}}
+body{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vh;padding:24px 20px;box-sizing:border-box;
+  background:#ECECEC;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;text-align:center;overflow:hidden}
+.foto{position:relative;width:min(440px,86vw)}
+.foto img{display:block;width:100%;height:auto;animation:flutua 6s ease-in-out infinite;
+  -webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+.foto::after{content:"";position:absolute;left:18%;right:18%;bottom:-14px;height:18px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.18),transparent);animation:sombra 6s ease-in-out infinite}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes sombra{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.85);opacity:.6}}
+h1{margin:0;font-size:clamp(40px,9vw,80px);font-weight:800;letter-spacing:.02em;line-height:1}
+p{margin:12px 0 0;font-size:clamp(14px,2.4vw,18px);font-weight:600;letter-spacing:.12em;color:#444}
+@media (prefers-reduced-motion:reduce){.foto img,.foto::after{animation:none}}
 </style>
 </head>
 <body>
-<main>
-  <div class="arch"><img src="juan.jpg" alt="Juan" width="900" height="837"></div>
-  <p class="name">Juan</p>
-  <h1>Em breve</h1>
-  <p class="items">Conteúdos <span>✦</span> Eventos</p>
-</main>
+<div class="foto"><img src="juan.png" alt="Juan" width="640" height="596"></div>
+<div>
+  <h1>EM BREVE</h1>
+  <p>CONTEÚDOS E EVENTOS</p>
+</div>
 </body>
 </html>
